@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --marrom: #571A00;
+    --terra: #683117;
+    --amarelo: #FEE08A;
+    --azul: #AFCFFE;
+    --creme: #FFFDDD;
+  }
+
+  body {
+    background-color: var(--creme);
+    color: var(--marrom);
+    font-family: 'Montserrat Alternates', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Fraunces', serif;
+  }
+}
+
