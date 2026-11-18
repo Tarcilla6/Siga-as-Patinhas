@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const Home: React.FC = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
 
   return (
@@ -93,7 +93,7 @@ export const Home: React.FC = () => {
             <p className="font-corpo text-xs text-[#571A00]">
               Ainda não faz parte?{' '}
               <button 
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate('/cadastro')}
                 className="font-bold underline hover:text-[#683117] transition-colors cursor-pointer"
               >
                 Criar cadastro
