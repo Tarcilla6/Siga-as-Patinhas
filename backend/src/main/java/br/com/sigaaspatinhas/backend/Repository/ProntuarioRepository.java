@@ -1,4 +1,4 @@
 package br.com.sigaaspatinhas.backend.Repository;
 
-public class ProntuarioRepository {
+public interface ProntuarioRepository {
 }

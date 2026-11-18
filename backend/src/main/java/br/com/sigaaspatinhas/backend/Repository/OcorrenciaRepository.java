@@ -1,4 +1,4 @@
 package br.com.sigaaspatinhas.backend.Repository;
 
-public class OcorrenciaRepository {
+public interface OcorrenciaRepository {
 }

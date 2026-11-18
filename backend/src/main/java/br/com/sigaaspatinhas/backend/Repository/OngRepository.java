@@ -1,4 +1,4 @@
 package br.com.sigaaspatinhas.backend.Repository;
 
-public class OngRepository {
+public interface OngRepository {
 }

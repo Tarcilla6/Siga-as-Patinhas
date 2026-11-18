@@ -1,4 +1,4 @@
 package br.com.sigaaspatinhas.backend.Repository;
 
-public class UsuarioRepositorty {
+public interface UsuarioRepository {
 }
