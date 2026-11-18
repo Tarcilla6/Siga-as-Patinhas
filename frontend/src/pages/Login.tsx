@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Mail, Eye, EyeClosed, ShieldCheck, User, Building, City } from 'iconoir-react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Mail,
+  Eye,
+  EyeClosed,
+  ShieldCheck,
+  User,
+  Building,
+  City,
+} from "iconoir-react";
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<'CIDADAO' | 'ONG' | 'GOVERNO'>('CIDADAO');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [profile, setProfile] = useState<"CIDADAO" | "ONG" | "GOVERNO">(
+    "CIDADAO",
+  );
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -17,7 +27,7 @@ export const Login: React.FC = () => {
     setError(null);
 
     if (!email.trim() || !password.trim() || !profile) {
-      setError('Por favor, preencha todos os campos obrigatórios.');
+      setError("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
 
@@ -47,28 +57,25 @@ export const Login: React.FC = () => {
 
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      if (profile === 'ONG' || profile === 'GOVERNO') {
-        navigate('/dashboard');
+      if (profile === "ONG" || profile === "GOVERNO") {
+        navigate("/dashboard");
       } else {
-        navigate('/');
+        navigate("/");
       }
     } catch (err: any) {
-      setError(err.message || 'Ocorreu um erro ao entrar. Tente novamente.');
+      setError(err.message || "Ocorreu um erro ao entrar. Tente novamente.");
     } finally {
       setLoading(false);
     }
   };
 
-
-
   return (
     <div className="min-h-screen bg-[#FFFDDD] text-[#571A00] flex flex-col justify-between">
-      
       {/* 1. Cabeçalho marrom (#571A00) ocupando 100% da largura (w-full) no topo, com logo alinhada */}
       <header className="w-full bg-[#571A00] shadow-md">
         <div className="w-full px-6 sm:px-8 py-3.5 sm:py-4 flex items-center justify-start">
-          <button 
-            onClick={() => navigate('/')} 
+          <button
+            onClick={() => navigate("/")}
             className="flex items-center space-x-3 cursor-pointer group text-left bg-transparent border-none p-0"
           >
             <div className="w-10 h-10 rounded-full bg-[#FEE08A] text-[#571A00] flex items-center justify-center font-destaque font-bold text-xl shadow-inner shrink-0 group-hover:scale-105 transition-transform">
@@ -88,7 +95,6 @@ export const Login: React.FC = () => {
 
       {/* 2. Área do Conteúdo Responsiva (sem trava rígida de 420px, centralizada em telas grandes com px-5 no mobile) */}
       <main className="w-full max-w-[520px] mx-auto px-5 sm:px-6 py-8 md:my-auto flex flex-col justify-center">
-
         {/* Pílula azul (#AFCFFE) "UMA REDE QUE PROTEGE" */}
         <div className="flex justify-center mb-3">
           <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#AFCFFE] border border-[#571A00]/20 shadow-sm">
@@ -104,7 +110,8 @@ export const Login: React.FC = () => {
             Que bom ter você por aqui!
           </h1>
           <p className="font-corpo text-sm md:text-base text-[#571A00]/90 leading-relaxed max-w-[360px] mx-auto">
-            Entre para cuidar, conectar e transformar a vida dos animais da sua cidade.
+            Entre para cuidar, conectar e transformar a vida dos animais da sua
+            cidade.
           </p>
         </div>
 
@@ -113,8 +120,8 @@ export const Login: React.FC = () => {
         {error && (
           <div className="mb-4 p-3.5 rounded-xl bg-red-100 border border-red-300 text-red-800 font-corpo text-xs flex items-center justify-between shadow-sm">
             <span>{error}</span>
-            <button 
-              onClick={() => setError(null)} 
+            <button
+              onClick={() => setError(null)}
               className="text-red-800 font-bold ml-2 hover:text-red-950 cursor-pointer"
             >
               ✕
@@ -129,48 +136,53 @@ export const Login: React.FC = () => {
           <div className="grid grid-cols-3 gap-2.5">
             <button
               type="button"
-              onClick={() => setProfile('CIDADAO')}
+              onClick={() => setProfile("CIDADAO")}
               className={`py-3 px-2 rounded-xl flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer border ${
-                profile === 'CIDADAO'
-                  ? 'bg-[#571A00] text-white border-[#571A00] shadow-md scale-[1.02]'
-                  : 'bg-white text-[#571A00] border-[#571A00]/30 hover:border-[#571A00]'
+                profile === "CIDADAO"
+                  ? "bg-[#571A00] text-white border-[#571A00] shadow-md scale-[1.02]"
+                  : "bg-white text-[#571A00] border-[#571A00]/30 hover:border-[#571A00]"
               }`}
             >
               <User className="w-5 h-5 shrink-0" />
-              <span className="font-corpo font-semibold text-xs sm:text-sm">Cidadão</span>
+              <span className="font-corpo font-semibold text-xs sm:text-sm">
+                Cidadão
+              </span>
             </button>
 
             <button
               type="button"
-              onClick={() => setProfile('ONG')}
+              onClick={() => setProfile("ONG")}
               className={`py-3 px-2 rounded-xl flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer border ${
-                profile === 'ONG'
-                  ? 'bg-[#571A00] text-white border-[#571A00] shadow-md scale-[1.02]'
-                  : 'bg-white text-[#571A00] border-[#571A00]/30 hover:border-[#571A00]'
+                profile === "ONG"
+                  ? "bg-[#571A00] text-white border-[#571A00] shadow-md scale-[1.02]"
+                  : "bg-white text-[#571A00] border-[#571A00]/30 hover:border-[#571A00]"
               }`}
             >
               <Building className="w-5 h-5 shrink-0" />
-              <span className="font-corpo font-semibold text-xs sm:text-sm">ONG</span>
+              <span className="font-corpo font-semibold text-xs sm:text-sm">
+                ONG
+              </span>
             </button>
 
             <button
               type="button"
-              onClick={() => setProfile('GOVERNO')}
+              onClick={() => setProfile("GOVERNO")}
               className={`py-3 px-2 rounded-xl flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer border ${
-                profile === 'GOVERNO'
-                  ? 'bg-[#571A00] text-white border-[#571A00] shadow-md scale-[1.02]'
-                  : 'bg-white text-[#571A00] border-[#571A00]/30 hover:border-[#571A00]'
+                profile === "GOVERNO"
+                  ? "bg-[#571A00] text-white border-[#571A00] shadow-md scale-[1.02]"
+                  : "bg-white text-[#571A00] border-[#571A00]/30 hover:border-[#571A00]"
               }`}
             >
               <City className="w-5 h-5 shrink-0" />
-              <span className="font-corpo font-semibold text-xs sm:text-sm">Governo</span>
+              <span className="font-corpo font-semibold text-xs sm:text-sm">
+                Governo
+              </span>
             </button>
           </div>
         </div>
 
         {/* Formulário de Login */}
         <form onSubmit={handleLogin} className="space-y-4">
-          
           {/* E-mail Input */}
           <div className="relative flex items-center">
             <input
@@ -179,7 +191,7 @@ export const Login: React.FC = () => {
               placeholder="E-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full py-3.5 pl-12 pr-4 rounded-full bg-white border border-[#571A00] text-[#571A00] placeholder-[#571A00]/50 font-corpo text-sm focus:outline-none focus:ring-2 focus:ring-[#571A00]/30 shadow-sm"
+              className="w-full py-3.5 pl-12 pr-4 rounded-full bg-white border border-[#571A00] text-[#571A00] placeholder-[#571A00]/50 font-corpo text-sm focus:outline-none focus:ring-4 focus:ring-[#FEE08A]/60 shadow-sm transition-all duration-200"
             />
             <div className="absolute left-3.5 w-7 h-7 rounded-full bg-[#AFCFFE]/40 border border-[#571A00]/30 flex items-center justify-center text-[#571A00]">
               <Mail className="w-4 h-4" />
@@ -190,12 +202,12 @@ export const Login: React.FC = () => {
           <div className="space-y-1">
             <div className="relative flex items-center">
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 required
                 placeholder="Senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full py-3.5 pl-12 pr-12 rounded-full bg-white border border-[#571A00] text-[#571A00] placeholder-[#571A00]/50 font-corpo text-sm focus:outline-none focus:ring-2 focus:ring-[#571A00]/30 shadow-sm"
+                className="w-full py-3.5 pl-12 pr-12 rounded-full bg-white border border-[#571A00] text-[#571A00] placeholder-[#571A00]/50 font-corpo text-sm focus:outline-none focus:ring-4 focus:ring-[#FEE08A]/60 shadow-sm transition-all duration-200"
               />
               <div className="absolute left-3.5 w-7 h-7 rounded-full bg-[#AFCFFE]/40 border border-[#571A00]/30 flex items-center justify-center text-[#571A00]">
                 <ShieldCheck className="w-4 h-4" />
@@ -206,7 +218,11 @@ export const Login: React.FC = () => {
                 className="absolute right-3.5 w-7 h-7 rounded-full hover:bg-black/5 flex items-center justify-center text-[#571A00]/70 cursor-pointer transition-colors"
                 title={showPassword ? "Ocultar senha" : "Mostrar senha"}
               >
-                {showPassword ? <EyeClosed className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? (
+                  <EyeClosed className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
 
@@ -214,7 +230,7 @@ export const Login: React.FC = () => {
             <div className="flex justify-end pt-1 pr-2">
               <button
                 type="button"
-                onClick={() => navigate('/cadastro')}
+                onClick={() => navigate("/cadastro")}
                 className="font-corpo text-xs text-[#571A00] hover:underline font-semibold cursor-pointer"
               >
                 Esqueci minha senha
@@ -225,36 +241,44 @@ export const Login: React.FC = () => {
           {/* Botão largo marrom "Entrar" */}
           <button
             type="submit"
-            className="w-full py-3.5 px-6 rounded-full bg-[#571A00] text-white font-corpo font-bold text-base shadow-lg hover:bg-[#683117] transition-all transform active:scale-95 flex items-center justify-center cursor-pointer mt-2"
+            disabled={loading}
+            className="w-full py-3.5 px-6 rounded-full bg-[#571A00] text-white font-corpo font-bold text-base shadow-lg hover:bg-[#683117] transition-all transform active:scale-95 flex items-center justify-center cursor-pointer mt-2 disabled:opacity-70"
           >
-            Entrar
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                Enviando...
+              </span>
+            ) : (
+              "Entrar"
+            )}
           </button>
         </form>
 
         {/* Aviso "Acesso seguro e seus dados protegidos" com ícone de escudo */}
         <div className="flex items-center justify-center gap-2 mt-6 text-[#571A00]/70">
           <ShieldCheck className="w-4 h-4 shrink-0" />
-          <span className="font-corpo text-xs">Acesso seguro e seus dados protegidos</span>
+          <span className="font-corpo text-xs">
+            Acesso seguro e seus dados protegidos
+          </span>
         </div>
 
-        {/* Rodapé "Ainda não faz parte? Criar cadastro" */}
+          {/* Rodapé "Ainda não faz parte? Criar cadastro" */}
         <div className="text-center mt-6 pb-4">
           <p className="font-corpo text-xs text-[#571A00]">
-            Ainda não faz parte?{' '}
+            Ainda não faz parte?{" "}
             <button
-              onClick={() => navigate('/cadastro')}
+              onClick={() => navigate("/cadastro")}
               className="font-bold underline hover:text-[#683117] transition-colors cursor-pointer"
             >
               Criar cadastro
             </button>
           </p>
         </div>
-
       </main>
 
       {/* Espaçador inferior em telas grandes */}
       <div className="h-4"></div>
-
     </div>
   );
 };
