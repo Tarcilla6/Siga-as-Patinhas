@@ -38,14 +38,14 @@ export const CadastroGoverno: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FFFDDD] text-[#571A00] flex flex-col items-center pb-12 font-sans">
       <header className="w-full bg-[#571A00] text-[#FFFDDD]">
-        <div className="relative w-full max-w-[680px] mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="w-full px-6 sm:px-8 py-4 flex items-center justify-between">
           <button
               onClick={() => navigate("/login")}
               className="z-10 w-10 h-10 rounded-full bg-[#FEE08A] flex items-center justify-center text-[#571A00] transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
             >
               <NavArrowLeft />
             </button>
-          <div className="absolute left-1/2 -translate-x-1/2 text-center">
+          <div className="text-center">
             <span className="text-xs">Siga as Patinhas</span>
             <h1 className="text-xl font-bold">Cadastro Governo</h1>
           </div>

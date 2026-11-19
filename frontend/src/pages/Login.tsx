@@ -179,6 +179,20 @@ export const Login: React.FC = () => {
               </span>
             </button>
           </div>
+
+          {/* Link para Login ONG/Cuidador */}
+          <div className="mt-4 p-3.5 border border-[#571A00]/20 rounded-2xl bg-white/50 text-center">
+            <p className="font-corpo text-xs font-semibold mb-1">
+              Já é uma ONG ou Cuidador?
+            </p>
+            <button
+              type="button"
+              onClick={() => navigate("/login/cuidado")}
+              className="text-xs text-[#571A00] font-bold underline cursor-pointer hover:text-[#683117]"
+            >
+              Acessar área de cuidador
+            </button>
+          </div>
         </div>
 
         {/* Formulário de Login */}
@@ -263,7 +277,7 @@ export const Login: React.FC = () => {
           </span>
         </div>
 
-          {/* Rodapé "Ainda não faz parte? Criar cadastro" */}
+        {/* Rodapé "Ainda não faz parte? Criar cadastro" */}
         <div className="text-center mt-6 pb-4">
           <p className="font-corpo text-xs text-[#571A00]">
             Ainda não faz parte?{" "}
