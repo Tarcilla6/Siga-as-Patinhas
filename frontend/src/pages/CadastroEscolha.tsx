@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, User, Building, Heart } from "iconoir-react";
+import { ArrowLeft, User, Building, Heart, ShieldCheck } from "iconoir-react";
 
 export const CadastroEscolha: React.FC = () => {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ export const CadastroEscolha: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FFFDDD] text-[#571A00] flex flex-col">
       <header className="w-full bg-[#571A00] text-[#FFFDDD]">
-        <div className="w-full max-w-[680px] mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="w-full px-6 sm:px-8 py-4 flex items-center justify-between">
           <button
             onClick={() => navigate("/login")}
             className="w-10 h-10 rounded-full bg-[#FEE08A] flex items-center justify-center text-[#571A00] hover:scale-105 transition-transform"
@@ -30,11 +30,12 @@ export const CadastroEscolha: React.FC = () => {
           Como você deseja se cadastrar?
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
           {[
             { title: "Cidadão", icon: User, path: "/cadastro/cidadao" },
-            { title: "ONG / Protetor", icon: Heart, path: "/cadastro/cidadao" },
-            { title: "Governo", icon: Building, path: "/cadastro/governo" },
+            { title: "ONG", icon: Building, path: "/cadastro/ong" },
+            { title: "Cuidador", icon: Heart, path: "/cadastro/cuidador" },
+            { title: "Governo", icon: ShieldCheck, path: "/cadastro/governo" },
           ].map((item) => (
             <button
               key={item.title}

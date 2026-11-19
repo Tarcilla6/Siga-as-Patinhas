@@ -53,7 +53,7 @@ export const CadastroCidadao: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FFFDDD] text-[#571A00] flex flex-col">
       <header className="w-full bg-[#571A00] text-[#FFFDDD]">
-        <div className="w-full max-w-[680px] mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="w-full px-6 sm:px-8 py-4 flex items-center justify-between">
           <button
             onClick={() => navigate("/login")}
             className="w-10 h-10 rounded-full bg-[#FEE08A] flex items-center justify-center text-[#571A00] hover:scale-105 transition-transform"
