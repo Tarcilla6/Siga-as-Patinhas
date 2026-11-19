@@ -1,22 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Menu,
   Heart,
   WarningTriangle,
-  List,
+  ShieldAlert,
   Home,
   Calendar,
   HelpCircle,
-  ShieldAlert,
   User,
   NavArrowRight,
 } from "iconoir-react";
 import { useNavigate } from "react-router-dom";
 import { Sidebar } from "../components/Sidebar";
 
+const Toast = ({ message, onClose }: { message: string; onClose: () => void }) => {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 2000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <div className="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-[#571A00] text-[#FEE08A] px-6 py-3 rounded-full shadow-lg font-bold text-sm animate-fade-in-out">
+      {message}
+    </div>
+  );
+};
+
+
 const HomeCompartilhada: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState<string | null>(null);
+  const [favorites, setFavorites] = useState<Record<string, boolean>>({});
+      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 450);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const toggleFavorite = (name: string) => {
+    const isFav = !!favorites[name];
+    setFavorites((prev) => ({ ...prev, [name]: !isFav }));
+    setToast(isFav ? "Removido dos favoritos!" : "Adicionado aos favoritos!");
+  };
 
   return (
     <div className="min-h-screen bg-[#FFFDDD] flex flex-col font-sans">
@@ -76,7 +104,7 @@ const HomeCompartilhada: React.FC = () => {
           {[
             { label: "Adotar", icon: Heart },
             { label: "Denunciar", icon: WarningTriangle },
-            { label: "Minhas denúncias", icon: List },
+            { label: "Minhas denúncias", icon: ShieldAlert },
           ].map(({ label, icon: Icon }) => (
             <button
               key={label}
@@ -101,37 +129,57 @@ const HomeCompartilhada: React.FC = () => {
             </button>
           </div>
           <div className="flex gap-4">
-            {[
-              {
-                name: "Amora",
-                img: "https://images.unsplash.com/photo-1591160690555-5debfba289f0?q=80&w=200&h=200&fit=crop",
-              },
-              {
-                name: "Nino",
-                img: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=200&h=200&fit=crop",
-              },
-            ].map((animal, i) => (
-              <div
-                key={i}
-                className="bg-white p-3 rounded-2xl w-1/2 border border-[#571A00] flex gap-3"
-              >
-                <img
-                  src={animal.img}
-                  alt={animal.name}
-                  className="w-16 h-16 rounded-xl object-cover"
-                />
-                <div className="flex flex-col gap-1">
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-bold text-[#571A00]">{animal.name}</h3>
-                    <Heart className="w-4 h-4 text-[#571A00]" />
+            {loading
+              ? [1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="bg-white p-3 rounded-2xl w-1/2 border border-[#571A00] flex gap-3 animate-pulse"
+                  >
+                    <div className="w-16 h-16 rounded-xl bg-gray-200" />
+                    <div className="flex flex-col gap-2 w-full">
+                      <div className="h-4 bg-gray-200 rounded w-3/4" />
+                      <div className="h-3 bg-gray-200 rounded w-1/2" />
+                    </div>
                   </div>
-                  <p className="text-[10px] text-[#571A00]/80">2 anos · 8km</p>
-                  <span className="bg-[#FEE08A] text-[#571A00] text-[9px] px-2 py-0.5 rounded-full w-fit font-bold uppercase">
-                    DISPONÍVEL
-                  </span>
-                </div>
-              </div>
-            ))}
+                ))
+              : [
+                  {
+                    name: "Amora",
+                    img: "https://images.unsplash.com/photo-1591160690555-5debfba289f0?q=80&w=200&h=200&fit=crop",
+                  },
+                  {
+                    name: "Nino",
+                    img: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=200&h=200&fit=crop",
+                  },
+                ].map((animal, i) => (
+                  <div
+                    key={i}
+                    className="bg-white p-3 rounded-2xl w-1/2 border border-[#571A00] flex gap-3"
+                  >
+                    <img
+                      src={animal.img}
+                      alt={animal.name}
+                      className="w-16 h-16 rounded-xl object-cover"
+                    />
+                    <div className="flex flex-col gap-1 w-full">
+                      <div className="flex justify-between items-center">
+                        <h3 className="font-bold text-[#571A00]">{animal.name}</h3>
+                        <button
+                          onClick={() => toggleFavorite(animal.name)}
+                          className="transition-transform active:scale-125"
+                        >
+                          <Heart
+                            className={`w-4 h-4 ${favorites[animal.name] ? "fill-[#571A00]" : "text-[#571A00]"}`}
+                          />
+                        </button>
+                      </div>
+                      <p className="text-[10px] text-[#571A00]/80">2 anos · 8km</p>
+                      <span className="bg-[#FEE08A] text-[#571A00] text-[9px] px-2 py-0.5 rounded-full w-fit font-bold uppercase">
+                        DISPONÍVEL
+                      </span>
+                    </div>
+                  </div>
+                ))}
           </div>
         </section>
 
@@ -208,17 +256,29 @@ const HomeCompartilhada: React.FC = () => {
           { name: "Denúncia", icon: ShieldAlert },
           { name: "Perfil", icon: User },
         ].map((item, idx) => (
-          <div
+          <button
             key={item.name}
-            className={`flex flex-col items-center gap-1 cursor-pointer ${item.active ? "bg-[#FEE08A] text-[#571A00] rounded-2xl px-3 py-1.5" : "text-white"}`}
+            className={`flex flex-col items-center gap-1 transition-all duration-200 active:scale-90 ${item.active ? "bg-[#FEE08A] text-[#571A00] rounded-2xl px-3 py-1.5" : "text-white"}`}
           >
             <item.icon className="w-6 h-6" />
             <span className="text-[10px]">{item.name}</span>
-          </div>
+          </button>
         ))}
       </nav>
+      <style>{`
+        @keyframes fade-in-out {
+          0% { opacity: 0; transform: translate(-50%, -20px); }
+          15% { opacity: 1; transform: translate(-50%, 0); }
+          85% { opacity: 1; transform: translate(-50%, 0); }
+          100% { opacity: 0; transform: translate(-50%, -20px); }
+        }
+        .animate-fade-in-out {
+          animation: fade-in-out 2s ease-in-out forwards;
+        }
+      `}</style>
     </div>
   );
 };
 
 export default HomeCompartilhada;
+

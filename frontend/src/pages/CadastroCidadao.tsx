@@ -2,6 +2,16 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, UserCircle, CloudUpload } from "iconoir-react";
 
+const Toast = ({ message, show }: { message: string; show: boolean }) => (
+  <div
+    className={`fixed bottom-8 right-8 bg-[#571A00] text-[#FEE08A] px-6 py-3 rounded-full shadow-lg transition-all duration-300 transform z-50 ${
+      show ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+    }`}
+  >
+    {message}
+  </div>
+);
+
 export const CadastroCidadao: React.FC = () => {
   const navigate = useNavigate();
   const [nome, setNome] = useState("");
@@ -14,6 +24,7 @@ export const CadastroCidadao: React.FC = () => {
   const [fotoPreview, setFotoPreview] = useState<string | null>(null);
   const [termos, setTermos] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const formatCPF = (value: string) => {
     return value
@@ -46,12 +57,16 @@ export const CadastroCidadao: React.FC = () => {
     setLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 800));
     setLoading(false);
-    alert("Cadastro concluído com sucesso!");
-    navigate("/");
+    setShowToast(true);
+    setTimeout(() => {
+        setShowToast(false);
+        navigate("/");
+    }, 1500);
   };
 
   return (
     <div className="min-h-screen bg-[#FFFDDD] text-[#571A00] flex flex-col">
+      <Toast message="Cadastro concluído com sucesso!" show={showToast} />
       <header className="w-full bg-[#571A00] text-[#FFFDDD]">
         <div className="w-full px-6 sm:px-8 py-4 flex items-center justify-between">
           <button
@@ -69,6 +84,7 @@ export const CadastroCidadao: React.FC = () => {
           </div>
         </div>
       </header>
+
 
       <main className="w-full max-w-[680px] mx-auto px-4 py-8 flex flex-col items-center">
         <div className="w-full flex flex-col items-center gap-2 mb-6">

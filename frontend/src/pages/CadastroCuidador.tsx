@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -12,6 +12,14 @@ import {
   Group,
 } from "iconoir-react";
 
+const Toast = ({ message, show }: { message: string; show: boolean }) => (
+  <div
+    className={`fixed bottom-8 right-8 bg-[#571A00] text-[#FEE08A] px-6 py-3 rounded-full shadow-lg transition-all duration-300 transform z-50 pointer-events-none ${show ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+  >
+    {message}
+  </div>
+);
+
 export const CadastroCuidador: React.FC = () => {
   const navigate = useNavigate();
   const [nome, setNome] = useState("");
@@ -23,7 +31,18 @@ export const CadastroCuidador: React.FC = () => {
   const [fotoPreview, setFotoPreview] = useState<string | null>(null);
   const [termos, setTermos] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
+  const getPasswordStrength = (s: string) => {
+    if (s.length === 0) return { width: "0%", color: "bg-gray-300" };
+    if (s.length < 6) return { width: "33%", color: "bg-red-500" };
+    if (s.length <= 8) return { width: "66%", color: "bg-yellow-500" };
+    if (/[0-9]/.test(s) || /[^A-Za-z0-9]/.test(s))
+      return { width: "100%", color: "bg-green-500" };
+    return { width: "66%", color: "bg-yellow-500" };
+  };
+
+  const strength = getPasswordStrength(senha);
   const formatTelefone = (v: string) =>
     v
       .replace(/\D/g, "")
@@ -33,11 +52,9 @@ export const CadastroCuidador: React.FC = () => {
 
   const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && file.size <= 5 * 1024 * 1024) {
+    if (file && file.size <= 5 * 1024 * 1024)
       setFotoPreview(URL.createObjectURL(file));
-    } else if (file) {
-      alert("Arquivo muito grande! Máximo 5MB.");
-    }
+    else if (file) alert("Arquivo muito grande! Máximo 5MB.");
   };
 
   const handleConcluir = async (e: React.FormEvent) => {
@@ -46,12 +63,16 @@ export const CadastroCuidador: React.FC = () => {
     setLoading(true);
     await new Promise((r) => setTimeout(r, 1500));
     setLoading(false);
-    alert("Cadastro concluído com sucesso!");
-    navigate("/login/cuidado");
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+      navigate("/login/cuidado");
+    }, 1500);
   };
 
   return (
     <div className="min-h-screen bg-[#FFFDDD] text-[#571A00] flex flex-col font-sans">
+      <Toast message="Cadastro concluído com sucesso!" show={showToast} />
       <header className="w-full bg-[#571A00] text-[#FFFDDD]">
         <div className="w-full px-6 sm:px-8 py-4 flex items-center justify-between">
           <button
@@ -70,7 +91,6 @@ export const CadastroCuidador: React.FC = () => {
           </div>
         </div>
       </header>
-
       <main className="w-full max-w-[540px] mx-auto px-5 py-8">
         <div className="flex flex-col items-center gap-2 mb-8 text-center">
           <div className="px-4 py-1 rounded-full bg-[#FEE08A] text-[#571A00] text-xs font-bold uppercase tracking-widest">
@@ -83,7 +103,6 @@ export const CadastroCuidador: React.FC = () => {
             Cadastro pessoal • campos com * são obrigatórios
           </p>
         </div>
-
         <form onSubmit={handleConcluir} className="w-full space-y-6">
           <div
             className="border-2 border-dashed border-[#571A00] rounded-2xl p-8 text-center cursor-pointer hover:bg-[#571A00]/5 transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
@@ -92,47 +111,40 @@ export const CadastroCuidador: React.FC = () => {
             <input
               id="foto-input"
               type="file"
-              accept="image/*"
               className="hidden"
               onChange={handleFotoChange}
+              accept="image/*"
             />
             {fotoPreview ? (
               <img
                 src={fotoPreview}
                 alt="Preview"
-                className="w-20 h-20 rounded-full object-cover mx-auto mb-2"
+                className="w-24 h-24 rounded-full mx-auto object-cover"
               />
             ) : (
-              <CloudUpload className="w-8 h-8 mx-auto mb-2" />
+              <div className="flex flex-col items-center">
+                <CloudUpload className="w-8 h-8 mb-2" />
+                <span className="text-sm font-bold">Adicionar foto</span>
+              </div>
             )}
-            <span className="block font-bold">Adicionar sua foto</span>
-            <span className="text-xs text-[#571A00]/70">Opcional. JPG ou PNG, até 5 MB.</span>
           </div>
-
-
           <div className="space-y-4">
-            <h3 className="font-bold text-lg">Sobre você</h3>
             {[
               {
-                label: "Nome completo *",
+                label: "Nome completo*",
                 icon: User,
                 value: nome,
                 setter: setNome,
               },
               {
-                label: "Telefone *",
+                label: "Telefone*",
                 icon: Phone,
                 value: telefone,
                 setter: (v: string) => setTelefone(formatTelefone(v)),
               },
+              { label: "E-mail*", icon: Mail, value: email, setter: setEmail },
               {
-                label: "E-mail *",
-                icon: Mail,
-                value: email,
-                setter: setEmail,
-              },
-              {
-                label: "Cidade / local de atuação *",
+                label: "Cidade*",
                 icon: MapPin,
                 value: cidade,
                 setter: setCidade,
@@ -157,7 +169,6 @@ export const CadastroCuidador: React.FC = () => {
               </div>
             ))}
           </div>
-
           <div className="space-y-4">
             <h3 className="font-bold text-lg">Seu acesso</h3>
             <div className="relative">
@@ -187,8 +198,13 @@ export const CadastroCuidador: React.FC = () => {
                   )}
                 </button>
               </div>
+              <div className="w-full h-1 bg-gray-200 mt-2 rounded-full overflow-hidden">
+                <div
+                  className={`h-full ${strength.color} transition-all duration-300`}
+                  style={{ width: strength.width }}
+                />
+              </div>
             </div>
-
             <label className="flex items-center gap-2 cursor-pointer bg-[#FEE08A] p-4 rounded-2xl">
               <input
                 type="checkbox"
@@ -201,7 +217,6 @@ export const CadastroCuidador: React.FC = () => {
                 Aceito os Termos de Uso
               </span>
             </label>
-
             <button
               type="submit"
               disabled={loading}
