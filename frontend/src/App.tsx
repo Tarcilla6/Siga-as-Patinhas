@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import HomeCompartilhada from './pages/HomeCompartilhada';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import LoginOngCuidador from './pages/LoginOngCuidador';
@@ -15,6 +16,7 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/inicio" element={<HomeCompartilhada />} />
         <Route path="/login" element={<Login />} />
         <Route path="/login/cuidado" element={<LoginOngCuidador />} />
         <Route path="/cadastro" element={<CadastroEscolha />} />

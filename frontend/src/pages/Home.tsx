@@ -43,7 +43,7 @@ const Home: React.FC = () => {
         {/* Ações centrais e inferiores */}
         <div className="flex flex-col space-y-4 sm:space-y-5 w-full pt-6">
           <button
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/login')}
             className="w-full py-3.5 sm:py-4 px-6 rounded-full bg-[#571A00] text-white font-corpo font-bold text-base shadow-lg hover:bg-[#683117] transition-all transform active:scale-95 flex items-center justify-center cursor-pointer"
           >
             Entrar

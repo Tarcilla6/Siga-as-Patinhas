@@ -85,31 +85,30 @@ export const CadastroCuidador: React.FC = () => {
         </div>
 
         <form onSubmit={handleConcluir} className="w-full space-y-6">
-          <label className="border-2 border-[#571A00] rounded-2xl p-4 flex items-center gap-4 cursor-pointer hover:bg-[#571A00]/5 transition-colors">
+          <div
+            className="border-2 border-dashed border-[#571A00] rounded-2xl p-8 text-center cursor-pointer hover:bg-[#571A00]/5 transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
+            onClick={() => document.getElementById("foto-input")?.click()}
+          >
             <input
+              id="foto-input"
               type="file"
-              className="hidden"
               accept="image/*"
+              className="hidden"
               onChange={handleFotoChange}
             />
-            <div className="w-16 h-16 rounded-full bg-[#571A00] text-[#FFFDDD] flex items-center justify-center overflow-hidden flex-shrink-0">
-              {fotoPreview ? (
-                <img
-                  src={fotoPreview}
-                  alt="Preview"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <CloudUpload className="w-8 h-8" />
-              )}
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold">Adicionar sua foto</span>
-              <span className="text-xs text-[#571A00]/70">
-                Opcional. JPG ou PNG, até 5 MB. Você pode adicionar depois.
-              </span>
-            </div>
-          </label>
+            {fotoPreview ? (
+              <img
+                src={fotoPreview}
+                alt="Preview"
+                className="w-20 h-20 rounded-full object-cover mx-auto mb-2"
+              />
+            ) : (
+              <CloudUpload className="w-8 h-8 mx-auto mb-2" />
+            )}
+            <span className="block font-bold">Adicionar sua foto</span>
+            <span className="text-xs text-[#571A00]/70">Opcional. JPG ou PNG, até 5 MB.</span>
+          </div>
+
 
           <div className="space-y-4">
             <h3 className="font-bold text-lg">Sobre você</h3>

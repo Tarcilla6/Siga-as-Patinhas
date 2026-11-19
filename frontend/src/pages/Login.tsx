@@ -57,10 +57,10 @@ export const Login: React.FC = () => {
 
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      if (profile === "ONG" || profile === "GOVERNO") {
-        navigate("/dashboard");
+      if (profile === "CIDADAO") {
+        navigate("/inicio");
       } else {
-        navigate("/");
+        navigate("/dashboard");
       }
     } catch (err: any) {
       setError(err.message || "Ocorreu um erro ao entrar. Tente novamente.");
