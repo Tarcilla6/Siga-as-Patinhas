@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const Home: React.FC = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
 
   return (
@@ -43,7 +43,7 @@ export const Home: React.FC = () => {
         {/* Ações centrais e inferiores */}
         <div className="flex flex-col space-y-4 sm:space-y-5 w-full pt-6">
           <button
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/login')}
             className="w-full py-3.5 sm:py-4 px-6 rounded-full bg-[#571A00] text-white font-corpo font-bold text-base shadow-lg hover:bg-[#683117] transition-all transform active:scale-95 flex items-center justify-center cursor-pointer"
           >
             Entrar
@@ -93,7 +93,7 @@ export const Home: React.FC = () => {
             <p className="font-corpo text-xs text-[#571A00]">
               Ainda não faz parte?{' '}
               <button 
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate('/cadastro')}
                 className="font-bold underline hover:text-[#683117] transition-colors cursor-pointer"
               >
                 Criar cadastro
