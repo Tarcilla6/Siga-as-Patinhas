@@ -12,6 +12,7 @@ import {
 } from "iconoir-react";
 import { useNavigate } from "react-router-dom";
 import { Sidebar } from "../components/Sidebar";
+import { BottomNav } from "../components/BottomNav";
 
 const Toast = ({ message, onClose }: { message: string; onClose: () => void }) => {
   useEffect(() => {
@@ -29,6 +30,7 @@ const Toast = ({ message, onClose }: { message: string; onClose: () => void }) =
 
 const HomeCompartilhada: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
@@ -192,11 +194,17 @@ const HomeCompartilhada: React.FC = () => {
                 Próximo evento
               </div>
             </h2>
-            <button className="text-[#571A00] font-bold underline text-sm">
+            <button 
+              onClick={() => navigate("/eventos")}
+              className="text-[#571A00] font-bold underline text-sm"
+            >
               Agenda
             </button>
           </div>
-          <div className="bg-[#FEE08A] p-3 rounded-2xl flex justify-between items-center border border-[#571A00]">
+          <div 
+            onClick={() => navigate("/eventos")}
+            className="bg-[#FEE08A] p-3 rounded-2xl flex justify-between items-center border border-[#571A00] cursor-pointer"
+          >
             <div className="flex items-center gap-3">
               <div className="bg-[#571A00] text-[#FFFDDD] rounded-xl p-3 text-center">
                 <div className="text-xl font-bold">12</div>
@@ -247,24 +255,7 @@ const HomeCompartilhada: React.FC = () => {
       </main>
 
       {/* Navbar Inferior */}
-      <nav className="fixed bottom-0 w-full bg-[#571A00] text-white flex justify-around py-3 px-2">
-        {[
-          { name: "Início", icon: Home, active: true },
-          { name: "Adoção", icon: Heart },
-          { name: "Eventos", icon: Calendar },
-          { name: "Suporte", icon: HelpCircle },
-          { name: "Denúncia", icon: ShieldAlert },
-          { name: "Perfil", icon: User },
-        ].map((item, idx) => (
-          <button
-            key={item.name}
-            className={`flex flex-col items-center gap-1 transition-all duration-200 active:scale-90 ${item.active ? "bg-[#FEE08A] text-[#571A00] rounded-2xl px-3 py-1.5" : "text-white"}`}
-          >
-            <item.icon className="w-6 h-6" />
-            <span className="text-[10px]">{item.name}</span>
-          </button>
-        ))}
-      </nav>
+      <BottomNav />
       <style>{`
         @keyframes fade-in-out {
           0% { opacity: 0; transform: translate(-50%, -20px); }
