@@ -1,4 +1,7 @@
 package br.com.sigaaspatinhas.backend.Repository;
 
-public interface UsuarioRepository {
+import java.util.Optional;
+
+public interface UsuarioRepository  {
+
 }
