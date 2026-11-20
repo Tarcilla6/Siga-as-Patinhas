@@ -21,10 +21,17 @@
 	</properties>
 
 	<dependencies>
-		<!-- Base do Spring Boot -->
+		<!-- JPA + Hibernate + pool de conexões (já inclui o starter-jdbc) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- Dialeto do SQLite para o Hibernate (a versão vem do Spring Boot) -->
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-community-dialects</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 
 		<!-- Driver JDBC do SQLite -->
@@ -34,19 +41,18 @@
 			<version>3.50.3.0</version>
 		</dependency>
 
-		<!-- Testes com JUnit e Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-jdbc</artifactId>
-	</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
