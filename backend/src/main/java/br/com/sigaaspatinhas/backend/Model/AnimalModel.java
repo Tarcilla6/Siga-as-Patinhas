@@ -1,7 +1,6 @@
 package br.com.sigaaspatinhas.backend.Model;
 
 import jakarta.persistence.*;
-import org.hibernate.Length;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -28,7 +27,6 @@ public class AnimalModel{
     @Column(length = 2000)
     private String historico;
 
-
     @Enumerated(EnumType.STRING)
     private StatusAnimal status = StatusAnimal.DISPONIVEL;
     @Enumerated(EnumType.STRING)
@@ -36,27 +34,20 @@ public class AnimalModel{
     @Enumerated(EnumType.STRING)
     private Porte porte;
 
-    // tags: "Carinhosa", "Sociavel"
     @ElementCollection
     @CollectionTable(name = "animal_temperamentos", joinColumns = @JoinColumn(name = "animal_id"))
     @Column(name = "temperamento")
     private Set<String> temperamentos = new LinkedHashSet<>();
 
-    // Fotos: guardamos só a URL/caminho da imagem, nunca a imagem dentro do banco
     @ElementCollection
     @CollectionTable(name = "animal_fotos", joinColumns = @JoinColumn(name = "animal_id"))
     @Column(name = "url")
-    @OrderColumn(name = "posicao")             // mantém a ordem (a 1ª é a foto principal)
+    @OrderColumn(name = "posicao")
     private List<String> fotos = new ArrayList<>();
-
-    // Muitos animais -> um responsável
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "responsavel_id")
     private  ResponsavelModel responsavel;
-
-    // getters e setters
-
 
     public UUID getId() {
         return id;
