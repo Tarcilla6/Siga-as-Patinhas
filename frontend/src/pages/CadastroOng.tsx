@@ -1,12 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Building, Attachment, ShieldCheck } from "iconoir-react";
 
 const CadastroOng: React.FC = () => {
   const navigate = useNavigate();
+  const [termos, setTermos] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => {
+        setToast(null);
+        navigate("/");
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [toast, navigate]);
+
+  const handleCadastroOng = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!termos) return;
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    setLoading(false);
+    setToast("Solicitação de cadastro enviada com sucesso!");
+  };
 
   return (
     <div className="min-h-screen bg-[#FFFDDD] text-[#571A00]">
+      {toast && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-[#571A00] text-[#FEE08A] border border-[#FEE08A] px-6 py-3 rounded-full shadow-xl font-bold text-sm transition-all duration-300">
+          {toast}
+        </div>
+      )}
       <header className="w-full bg-[#571A00] text-[#FFFDDD]">
         <div className="w-full px-6 sm:px-8 py-4 flex items-center justify-between">
           <button onClick={() => navigate("/cadastro")} className="w-10 h-10 rounded-full bg-[#FEE08A] flex items-center justify-center text-[#571A00] hover:scale-105 transition-transform">
@@ -76,13 +103,22 @@ const CadastroOng: React.FC = () => {
             </div>
             
             <div className="bg-[#AFCFFE]/40 p-4 rounded-xl flex gap-3">
-                <input type="checkbox" className="w-5 h-5 accent-[#571A00]" />
+                <input 
+                  type="checkbox" 
+                  checked={termos}
+                  onChange={(e) => setTermos(e.target.checked)}
+                  className="w-5 h-5 accent-[#571A00]" 
+                />
                 <label className="text-xs">Declaro que posso representar esta organização.</label>
             </div>
         </div>
 
-        <button className="w-full mt-8 py-4 rounded-full bg-[#571A00] text-white font-bold hover:-translate-y-0.5 active:scale-95 transition-all">
-          Enviar para validação
+        <button 
+          onClick={handleCadastroOng}
+          disabled={loading || !termos}
+          className="w-full mt-8 py-4 rounded-full bg-[#571A00] text-white font-bold hover:-translate-y-0.5 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:translate-y-0"
+        >
+          {loading ? "Enviando..." : "Enviar para validação"}
         </button>
 
         <div className="text-center mt-6">
@@ -94,3 +130,4 @@ const CadastroOng: React.FC = () => {
 };
 
 export default CadastroOng;
+

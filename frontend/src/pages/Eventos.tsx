@@ -105,6 +105,17 @@ export const Eventos: React.FC = () => {
       tipo: "ADOÇÃO",
       corFundo: "#FFFDDD",
     },
+    {
+        id: "4",
+        titulo: "Palestra de Posse Responsável",
+        data: "29 OUT",
+        hora: "14h",
+        local: "Biblioteca Municipal",
+        vagas: 40,
+        tipo: "OUTRAS",
+        corFundo: "#FEE08A",
+      },
+
   ]);
 
   useEffect(() => {
@@ -236,37 +247,51 @@ export const Eventos: React.FC = () => {
         </div>
 
         <div className="space-y-4">
-          {eventosFiltrados.map((ev) => {
-            const [dia, mes] = ev.data.split(" ");
-            return (
-              <div
-                key={ev.id}
-                onClick={() => setSelectedEvent(ev)}
-                style={{ backgroundColor: ev.corFundo }}
-                className="flex items-center p-4 rounded-2xl border border-[#571A00] transition-transform hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+          {eventosFiltrados.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <p className="text-[#571A00] font-medium mb-4">
+                Nenhum evento encontrado nesta categoria
+              </p>
+              <button
+                onClick={() => setActiveFilter("TODOS")}
+                className="bg-[#571A00] text-[#FFFDDD] px-6 py-2 rounded-xl font-bold hover:opacity-90"
               >
-                <div className="bg-[#571A00] text-[#FFFDDD] text-center p-2 rounded-xl mr-4 min-w-[50px]">
-                  <div className="font-bold text-lg">{dia}</div>
-                  <div className="text-[10px] font-bold">{mes}</div>
+                Ver todos os eventos
+              </button>
+            </div>
+          ) : (
+            eventosFiltrados.map((ev) => {
+              const [dia, mes] = ev.data.split(" ");
+              return (
+                <div
+                  key={ev.id}
+                  onClick={() => setSelectedEvent(ev)}
+                  style={{ backgroundColor: ev.corFundo }}
+                  className="flex items-center p-4 rounded-2xl border border-[#571A00] transition-transform hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+                >
+                  <div className="bg-[#571A00] text-[#FFFDDD] text-center p-2 rounded-xl mr-4 min-w-[50px]">
+                    <div className="font-bold text-lg">{dia}</div>
+                    <div className="text-[10px] font-bold">{mes}</div>
+                  </div>
+                  <div className="flex-1">
+                    <span className="text-[8px] font-bold uppercase bg-white px-2 py-0.5 rounded-full border border-[#571A00]">
+                      {ev.tipo}
+                    </span>
+                    <h4 className="font-bold font-serif mt-1">{ev.titulo}</h4>
+                    <p className="text-[10px]">
+                      {ev.local} · {ev.hora}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] font-bold block">
+                      {ev.vagas > 0 ? `${ev.vagas} vagas` : "Esgotado"}
+                    </span>
+                    <NavArrowRight className="w-5 h-5 ml-auto" />
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <span className="text-[8px] font-bold uppercase bg-white px-2 py-0.5 rounded-full border border-[#571A00]">
-                    {ev.tipo}
-                  </span>
-                  <h4 className="font-bold font-serif mt-1">{ev.titulo}</h4>
-                  <p className="text-[10px]">
-                    {ev.local} · {ev.hora}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <span className="text-[10px] font-bold block">
-                    {ev.vagas > 0 ? `${ev.vagas} vagas` : "Esgotado"}
-                  </span>
-                  <NavArrowRight className="w-5 h-5 ml-auto" />
-                </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </div>
       </main>
 
