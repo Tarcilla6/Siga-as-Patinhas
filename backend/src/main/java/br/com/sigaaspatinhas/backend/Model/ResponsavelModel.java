@@ -10,14 +10,22 @@ import java.util.UUID;
 public class ResponsavelModel {
 
     @Id // chave primaria na tabela
-    @GeneratedValue(strategy = GenerationType.UUID)  // o Hibernate gera o UUID ao salvar
+    @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(SqlTypes.CHAR)
     private UUID id;
 
     @Column(nullable = false )
-    private String nome; // nome da org ou responsavel
+    private String nome;
     private boolean verificado;
-    private int respondeEmHoras; // 24 => responde ate em um dia
+    private int respondeEmHoras;
+
+    @OneToOne
+    @JoinColumn(name = "usuario_id", unique = true)
+    private UsuarioModel usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "ong_id")
+    private OngModel ong;
 
     public ResponsavelModel () {}
 
@@ -57,5 +65,21 @@ public class ResponsavelModel {
 
     public void setRespondeEmHoras(int respondeEmHoras) {
         this.respondeEmHoras = respondeEmHoras;
+    }
+
+    public UsuarioModel getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioModel usuario) {
+        this.usuario = usuario;
+    }
+
+    public OngModel getOng() {
+        return ong;
+    }
+
+    public void setOng(OngModel ong) {
+        this.ong = ong;
     }
 }
