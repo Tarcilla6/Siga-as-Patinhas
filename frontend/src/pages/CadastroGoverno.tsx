@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavArrowLeft, Building } from "iconoir-react";
 
@@ -25,26 +25,48 @@ export const CadastroGoverno: React.FC = () => {
     // TODO: Chamar endpoint backend Java
   };
 
+  const [toast, setToast] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (toast && toast !== "Solicitação de acesso enviada com sucesso!") {
+      const timer = setTimeout(() => {
+        setToast(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
   const handleGovernoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.aceite) {
+      setToast("Por favor, aceite os Termos de Uso para continuar.");
+      return;
+    }
     setLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 800));
-    setLoading(false);
-    alert("Solicitação de cadastro enviada com sucesso!");
-    navigate("/");
+    setToast("Solicitação de acesso enviada com sucesso!");
+    setTimeout(() => {
+        setLoading(false);
+        navigate("/login");
+    }, 1800);
   };
 
   return (
     <div className="min-h-screen bg-[#FFFDDD] text-[#571A00] flex flex-col items-center pb-12 font-sans">
+      {toast && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-[#571A00] text-[#FEE08A] border border-[#FEE08A] px-6 py-3 rounded-full shadow-xl font-bold text-sm transition-all duration-300">
+          {toast}
+        </div>
+      )}
       <header className="w-full bg-[#571A00] text-[#FFFDDD]">
         <div className="w-full px-6 sm:px-8 py-4 flex items-center justify-between">
           <button
-              onClick={() => navigate("/login")}
-              className="z-10 w-10 h-10 rounded-full bg-[#FEE08A] flex items-center justify-center text-[#571A00] transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
-            >
-              <NavArrowLeft />
-            </button>
+            onClick={() => navigate("/login")}
+            className="z-10 w-10 h-10 rounded-full bg-[#FEE08A] flex items-center justify-center text-[#571A00] transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
+          >
+            <NavArrowLeft />
+          </button>
           <div className="text-center">
             <span className="text-xs">Siga as Patinhas</span>
             <h1 className="text-xl font-bold">Cadastro Governo</h1>
@@ -169,6 +191,7 @@ export const CadastroGoverno: React.FC = () => {
             <label className="flex items-center gap-3 text-sm font-semibold mb-6 cursor-pointer">
               <input
                 type="checkbox"
+                required
                 onChange={(e) =>
                   setFormData({ ...formData, aceite: e.target.checked })
                 }
@@ -178,14 +201,16 @@ export const CadastroGoverno: React.FC = () => {
             <button
               type="submit"
               className="w-full bg-[#571A00] text-white py-4 rounded-full font-bold transition-all duration-200 hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
-              disabled={loading}
+              disabled={loading || !formData.aceite}
             >
               {loading ? (
                 <>
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                   Enviando...
                 </>
-              ) : "Solicitar acesso"}
+              ) : (
+                "Solicitar acesso"
+              )}
             </button>
           </div>
 

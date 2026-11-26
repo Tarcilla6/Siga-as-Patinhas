@@ -4,8 +4,8 @@ import { ArrowLeft, UserCircle, CloudUpload } from "iconoir-react";
 
 const Toast = ({ message, show }: { message: string; show: boolean }) => (
   <div
-    className={`fixed bottom-8 right-8 bg-[#571A00] text-[#FEE08A] px-6 py-3 rounded-full shadow-lg transition-all duration-300 transform z-50 ${
-      show ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+    className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-[#571A00] text-[#FEE08A] border border-[#FEE08A] px-6 py-3 rounded-full shadow-xl font-bold text-sm transition-all duration-300 ${
+      show ? "opacity-100" : "opacity-0 pointer-events-none"
     }`}
   >
     {message}
@@ -213,8 +213,8 @@ export const CadastroCidadao: React.FC = () => {
             </label>
             <button
               type="submit"
-              className="w-full bg-[#571A00] text-[#FFFDDD] py-4 rounded-full font-bold transition-all duration-200 hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
-              disabled={loading}
+              className="w-full bg-[#571A00] text-[#FFFDDD] py-4 rounded-full font-bold transition-all duration-200 hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
+              disabled={loading || !termos}
             >
               {loading ? (
                 <>
