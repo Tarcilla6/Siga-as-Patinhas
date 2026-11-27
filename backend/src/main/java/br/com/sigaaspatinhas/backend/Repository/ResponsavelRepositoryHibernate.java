@@ -1,11 +1,15 @@
 package br.com.sigaaspatinhas.backend.Repository;
 
 import br.com.sigaaspatinhas.backend.Model.ResponsavelModel;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
+@Profile("!memoria")
 public class ResponsavelRepositoryHibernate implements  ResponsavelRepository{
 
     private final ResponsavelJpaRepository jpa;
