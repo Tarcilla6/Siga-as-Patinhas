@@ -124,20 +124,26 @@ classDiagram
     class ONG {
         -UUID id
         -String nome
+        -String registro
+        -String responsavelLegal
         -String cnpj
         -String email
         -String telefone
         -String endereco
         -String descricao
+        -String documentoUrl
         -StatusValidacao statusValidacao
+        -boolean ativa
         -LocalDate dataCadastro
     }
 
     class Responsavel {
         -UUID id
-        -String cpf
-        -String endereco
-        -LocalDate dataCadastro
+        -String nome
+        -boolean verificao
+        -int respondeEmHoras
+        -UsuarioModel usuario
+        -OngModel ong
     }
 
     class Animal {
@@ -180,12 +186,17 @@ classDiagram
 
     class InscricaoEvento {
         -UUID id
+        -EventoModel evento;
+        -UsuarioModel usuario;
         -LocalDateTime dataInscricao
     }
 
     class Perfil {
         <<enumeration>>
-        CIDADAO
+        CIDADAO,
+        CUIDADOR,
+        ONG,
+        GOVERNO
     }
 
     class StatusValidacao {
