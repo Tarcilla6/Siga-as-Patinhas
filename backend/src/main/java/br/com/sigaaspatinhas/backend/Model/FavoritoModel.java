@@ -40,4 +40,5 @@ public class FavoritoModel {
     public UsuarioModel getUsuario() { return usuario; }
     public AnimalModel getAnimal() { return animal; }
     public LocalDateTime getCriadoEm() { return criadoEm; }
+
 }
