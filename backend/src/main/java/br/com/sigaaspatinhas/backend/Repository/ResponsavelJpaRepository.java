@@ -1,4 +1,7 @@
 package br.com.sigaaspatinhas.backend.Repository;
 
-public interface ResponsavelJpaRepository {
+import br.com.sigaaspatinhas.backend.Model.ResponsavelModel;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ResponsavelJpaRepository extends JpaRepository<ResponsavelModel, Long> {
 }
