@@ -93,92 +93,158 @@ Desenvolver uma plataforma que facilite o **registro e o acompanhamento dos anim
   'primaryColor':'#FDF6EC',
   'primaryBorderColor':'#6B2410',
   'primaryTextColor':'#6B2410',
-  'lineColor':'#D9B99B',
-  'secondaryColor':'#FFE3A8',
-  'tertiaryColor':'#DCE9F8'
+  'lineColor':'#C9A27E',
+  'secondaryColor':'#FFD98A',
+  'tertiaryColor':'#B9D4F5'
 }}}%%
 classDiagram
     direction TB
 
     class Usuario {
-        -Long id
+        -UUID id
         -String nome
         -String email
-        -String senha
+        -String senhaHash
         -String telefone
-        -TipoUsuario tipoUsuario
+        -String cpf
+        -LocalDate dataNascimento
+        -String cidade
+        -String fotoUrl
+        -Perfil perfil
         -Boolean ativo
         -LocalDateTime dataCadastro
     }
 
     class ONG {
-        -Long id
+        -UUID id
         -String nome
         -String cnpj
         -String email
         -String telefone
         -String endereco
         -String descricao
-        -Boolean ativa
+        -StatusValidacao statusValidacao
         -LocalDate dataCadastro
     }
 
     class Responsavel {
-        -Long id
+        -UUID id
         -String cpf
         -String endereco
         -LocalDate dataCadastro
     }
 
     class Animal {
-        -Long id
+        -UUID id
         -String nome
         -String especie
-        -String raca
-        -String sexo
-        -String porte
-        -String cor
-        -String descricao
-        -StatusAnimal status
+        -Sexo sexo
+        -Porte porte
+        -Integer idadeMeses
+        -Boolean castrado
         -Boolean vacinado
-        -Boolean disponivelAdocao
-        -String foto
-        -String localizacao
-        -LocalDate dataCadastro
+        -Boolean conviveBemComCaes
+        -StatusAnimal status
+        -String bairro
+        -String historia
+        -Set~String~ temperamentos
+        -List~String~ fotos
     }
 
-    class Acompanhamento {
-        -Long id
-        -TipoRegistro tipoRegistro
+    class Evento {
+        -UUID id
+        -String titulo
         -String descricao
-        -String localizacao
-        -LocalDateTime dataRegistro
-        -String observacoes
+        -TipoEvento tipo
+        -LocalDateTime dataHora
+        -String local
     }
 
-    class Adocao {
-        -Long id
-        -LocalDate dataSolicitacao
-        -LocalDate dataConclusao
-        -StatusAdocao status
-        -String observacoes
-        +solicitar()
-        +aprovar()
-        +recusar()
-        +cancelar()
-        +concluir()
+    class Favorito {
+        -UUID id
+        -LocalDateTime criadoEm
+    }
+
+    class Interesse {
+        -UUID id
+        -LocalDateTime criadoEm
+        -StatusInteresse status
+        -String mensagem
+    }
+
+    class InscricaoEvento {
+        -UUID id
+        -LocalDateTime dataInscricao
+    }
+
+    class Perfil {
+        <<enumeration>>
+        CIDADAO
+    }
+    class StatusValidacao {
+        <<enumeration>>
+    }
+    class StatusAnimal {
+        <<enumeration>>
+        DISPONIVEL
+        EM_PROCESSO
+        ADOTADO
+    }
+    class StatusInteresse {
+        <<enumeration>>
+        PENDENTE
+        EM_CONVERSA
+        APROVADO
+        RECUSADO
+    }
+    class Porte {
+        <<enumeration>>
+        PEQUENO
+        MEDIO
+        GRANDE
+    }
+    class Sexo {
+        <<enumeration>>
+        MACHO
+        FEMEA
+    }
+    class TipoEvento {
+        <<enumeration>>
     }
 
     Usuario "1" --> "0..1" Responsavel : possui perfil
+    Usuario "1" --> "0..*" Animal : cadastra
     ONG "1" --> "0..*" Animal : gerencia
     Responsavel "0..1" --> "0..*" Animal : responsável atual
-    Usuario "1" --> "0..*" Animal : cadastra
-    Animal "1" --> "0..*" Acompanhamento : possui histórico
-    Usuario "1" --> "0..*" Acompanhamento : registra
-    Animal "1" --> "0..*" Adocao : possui processos
-    Responsavel "1" --> "0..*" Adocao : solicita
-    Usuario "0..1" --> "0..*" Adocao : analisa
+    ONG "1" --> "0..*" Evento : organiza
+
+    Usuario "1" --> "0..*" Favorito : favorita
+    Animal "1" --> "0..*" Favorito : é favoritado
+    Usuario "1" --> "0..*" Interesse : demonstra
+    Animal "1" --> "0..*" Interesse : recebe
+
+    Usuario "1" --> "0..*" InscricaoEvento : se inscreve
+    Evento "1" --> "0..*" InscricaoEvento : recebe inscrições
+
+    Usuario ..> Perfil
+    ONG ..> StatusValidacao
+    Animal ..> StatusAnimal
+    Animal ..> Porte
+    Animal ..> Sexo
+    Interesse ..> StatusInteresse
+    Evento ..> TipoEvento
+
+    classDef entidade fill:#FDF6EC,stroke:#6B2410,stroke-width:2px,color:#6B2410
+    classDef intermediaria fill:#FFD98A,stroke:#6B2410,stroke-width:2px,color:#6B2410
+    classDef enumeracao fill:#B9D4F5,stroke:#6B2410,stroke-width:1px,color:#6B2410
+
+    class Usuario,ONG,Responsavel,Animal,Evento entidade
+    class Favorito,Interesse,InscricaoEvento intermediaria
+    class Perfil,StatusValidacao,StatusAnimal,StatusInteresse,Porte,Sexo,TipoEvento enumeracao
 ```
+
+**Legenda:** 🟫 creme = entidade principal · 🟨 amarelo = tabela intermediária (N:N) · 🟦 azul = enum
+
 
 ---
 
