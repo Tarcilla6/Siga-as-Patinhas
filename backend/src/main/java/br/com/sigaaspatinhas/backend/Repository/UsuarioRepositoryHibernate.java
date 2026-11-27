@@ -34,6 +34,16 @@ public class UsuarioRepositoryHibernate implements UsuarioRepository{
     }
 
     @Override
+    public Optional<UsuarioModel> buscarPorEmail(String email) {
+        return jpa.findByEmail(email);
+    }
+
+    @Override
+    public boolean existePorEmail(String email) {
+        return jpa.existsByEmail(email);
+    }
+
+    @Override
     public void excluir(UUID id) {
         jpa.deleteById(id);
     }

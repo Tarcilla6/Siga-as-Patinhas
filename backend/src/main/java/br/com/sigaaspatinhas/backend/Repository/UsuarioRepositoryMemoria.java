@@ -42,6 +42,17 @@ public class UsuarioRepositoryMemoria implements UsuarioRepository{
     }
 
     @Override
+    public Optional<UsuarioModel> buscarPorEmail(String email) {
+        return usuarios.stream().filter(usuario -> usuario.getEmail() != null
+                                         && usuario.getEmail().equalsIgnoreCase(email)).findFirst();
+    }
+
+    @Override
+    public boolean existePorEmail(String email) {
+        return buscarPorEmail(email).isPresent();
+    }
+
+    @Override
     public void excluir(UUID id) {
         usuarios.removeIf(usuario -> usuario.getId() != null && usuario.getId().equals(id));
     }
