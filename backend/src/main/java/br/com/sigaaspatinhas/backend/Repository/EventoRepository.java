@@ -10,11 +10,11 @@ public interface EventoRepository {
 
     EventoModel salvar(EventoModel evento);
 
+    Optional<EventoModel> buscarPorId(UUID id);
+
     List<EventoModel> listarTodos();
 
     List<EventoModel> listarPorNome(String titulo);
 
-    Optional<EventoModel> buscarPorId(UUID id);
-
-    void excluir(UUID id);
+    void remover(UUID id);
 }

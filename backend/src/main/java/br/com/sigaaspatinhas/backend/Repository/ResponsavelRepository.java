@@ -16,5 +16,5 @@ public interface ResponsavelRepository {
 
     Optional<ResponsavelModel> buscarPorNome(String nome);
 
-    void excluir(UUID id);
+    void remover(UUID id);
 }

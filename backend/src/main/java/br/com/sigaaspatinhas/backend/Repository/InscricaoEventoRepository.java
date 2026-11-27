@@ -14,5 +14,5 @@ public interface InscricaoEventoRepository {
 
     Optional<InscricaoEventoModel> buscarPorId(UUID id);
 
-    void excluir(UUID id);
+    void remover(UUID id);
 }
