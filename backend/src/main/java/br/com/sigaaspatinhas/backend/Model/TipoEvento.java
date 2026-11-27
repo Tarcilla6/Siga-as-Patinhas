@@ -1,5 +1,8 @@
 package br.com.sigaaspatinhas.backend.Model;
 
-public class TipoEvento {
-    
+public enum TipoEvento {
+    CASTRACAO,
+    VACINACAO,
+    ADOCAO,
+    OUTRAS
 }
