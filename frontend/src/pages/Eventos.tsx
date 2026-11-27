@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Menu,
   Heart,
   ShieldAlert,
   Home,
@@ -8,7 +7,6 @@ import {
   HelpCircle,
   User,
   NavArrowRight,
-  ArrowLeft,
   Xmark,
   MapPin,
   Clock,
@@ -16,6 +14,7 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import { Sidebar } from "../components/Sidebar";
 import { BottomNav } from "../components/BottomNav";
+import { Header } from "../components/Header";
 
 export interface EventoDTO {
   id: string;
@@ -148,34 +147,10 @@ export const Eventos: React.FC = () => {
     <div className="min-h-screen bg-[#FFFDDD] flex flex-col font-sans text-[#571A00]">
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
 
-      <header className="w-full bg-[#571A00] px-6 py-4 flex items-center justify-between">
-        <button
-          onClick={() => navigate("/inicio")}
-          className="w-10 h-10 rounded-full bg-[#FEE08A] flex items-center justify-center transition-transform hover:scale-105 active:scale-95 cursor-pointer"
-        >
-          <ArrowLeft className="text-[#571A00]" />
-        </button>
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-[#FEE08A] flex items-center justify-center">
-            <span className="text-xl">🐾</span>
-          </div>
-          <div className="text-[#FFFDDD] font-bold text-lg font-serif leading-tight">
-            Siga as
-            <br />
-            Patinhas
-          </div>
-        </div>
-        <button
-          onClick={() => setIsSidebarOpen(true)}
-          className="w-10 h-10 rounded-full bg-[#FEE08A] flex items-center justify-center transition-transform hover:scale-105 active:scale-95 cursor-pointer"
-        >
-          <Menu className="text-[#571A00]" />
-        </button>
-      </header>
-
+      <Header onOpenSidebar={() => setIsSidebarOpen(true)} />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-      <main className="flex-grow w-full max-w-[760px] mx-auto px-5 py-6 pb-28">
+      <main className="flex-grow w-full max-w-5xl mx-auto px-6 py-8 pb-28">
         <div className="bg-[#FEE08A] text-[#571A00] px-3 py-1 rounded-full text-[10px] font-bold w-fit mb-3">
           AGENDA DA COMUNIDADE
         </div>
@@ -246,9 +221,9 @@ export const Eventos: React.FC = () => {
           </span>
         </div>
 
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {eventosFiltrados.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-10 text-center">
+            <div className="col-span-1 md:col-span-2 flex flex-col items-center justify-center py-10 text-center">
               <p className="text-[#571A00] font-medium mb-4">
                 Nenhum evento encontrado nesta categoria
               </p>

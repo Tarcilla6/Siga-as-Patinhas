@@ -12,6 +12,7 @@ import CadastroGoverno from "./pages/CadastroGoverno";
 import { CadastroEscolha } from "./pages/CadastroEscolha";
 import { Adocao } from "./pages/Adocao";
 import { CadastroCuidador } from "./pages/CadastroCuidador";
+import { PerfilAnimal } from "./pages/PerfilAnimal";
 
 const App: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/inicio" element={<HomeCompartilhada />} />
         <Route path="/adocao" element={<Adocao />} />
+        <Route path="/animal/:id" element={<PerfilAnimal />} />
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/login" element={<Login />} />
         <Route path="/login/cuidado" element={<LoginOngCuidador />} />
@@ -35,3 +37,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
