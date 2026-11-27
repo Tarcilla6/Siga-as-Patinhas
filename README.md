@@ -264,10 +264,9 @@ classDiagram
     class Perfil enumeracao
     class StatusValidacao enumeracao
     class StatusAnimal enumeracao
-    class StatusInteresse enumeracao
     class Porte enumeracao
     class Sexo enumeracao
-    class TipoEvento enumeracao
+    class tipoEvento enumeracao
 ```
 
 ### 🎨 Legenda
