@@ -12,7 +12,7 @@ public interface EventoRepository {
 
     List<EventoModel> listarTodos();
 
-    List<EventoModel> listarPorNome(String nome);
+    List<EventoModel> listarPorNome(String titulo);
 
     Optional<EventoModel> buscarPorId(UUID id);
 
