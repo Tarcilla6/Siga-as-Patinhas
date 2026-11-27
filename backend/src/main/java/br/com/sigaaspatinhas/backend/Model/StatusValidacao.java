@@ -4,5 +4,6 @@ package br.com.sigaaspatinhas.backend.Model;
 public enum StatusValidacao {
     PENDENTE,
     APROVADA,
-    REJEITADA
+    REJEITADA,
+    EM_CONVERSA
 }
