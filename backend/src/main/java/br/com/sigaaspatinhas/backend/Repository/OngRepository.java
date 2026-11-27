@@ -14,7 +14,7 @@ public interface OngRepository {
 
     Optional<OngModel> buscarPorId(UUID id);
 
-    Optional<OngModel> buscarPorNome(String nome);
+    List<OngModel> buscarPorNome(String nome);
 
     void remover(UUID id);
 }
