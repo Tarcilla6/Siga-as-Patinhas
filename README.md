@@ -87,7 +87,10 @@ Desenvolver uma plataforma que facilite o **registro e o acompanhamento dos anim
 ## 🧩 Modelagem do sistema
 
 
-## 📊 Diagrama de Classes
+
+## 🛠️ Modelagem do sistema
+
+### 📊 Diagrama de Classes
 
 O diagrama abaixo representa a estrutura principal do sistema **Siga as Patinhas**, apresentando as entidades, seus atributos, enumerações e os relacionamentos entre elas.
 
@@ -248,9 +251,23 @@ classDiagram
     classDef intermediaria fill:#FFD98A,stroke:#6B2410,stroke-width:2px,color:#6B2410
     classDef enumeracao fill:#B9D4F5,stroke:#6B2410,stroke-width:1px,color:#6B2410
 
-    class Usuario,ONG,Responsavel,Animal,Evento entidade
-    class Favorito,Interesse,InscricaoEvento intermediaria
-    class Perfil,StatusValidacao,StatusAnimal,StatusInteresse,Porte,Sexo,TipoEvento enumeracao
+    class Usuario entidade
+    class ONG entidade
+    class Responsavel entidade
+    class Animal entidade
+    class Evento entidade
+
+    class Favorito intermediaria
+    class Interesse intermediaria
+    class InscricaoEvento intermediaria
+
+    class Perfil enumeracao
+    class StatusValidacao enumeracao
+    class StatusAnimal enumeracao
+    class StatusInteresse enumeracao
+    class Porte enumeracao
+    class Sexo enumeracao
+    class TipoEvento enumeracao
 ```
 
 ### 🎨 Legenda
