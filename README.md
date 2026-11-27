@@ -86,7 +86,10 @@ Desenvolver uma plataforma que facilite o **registro e o acompanhamento dos anim
 
 ## 🧩 Modelagem do sistema
 
-### Diagrama de classes
+
+## 📊 Diagrama de Classes
+
+O diagrama abaixo representa a estrutura principal do sistema **Siga as Patinhas**, apresentando as entidades, seus atributos, enumerações e os relacionamentos entre elas.
 
 ```mermaid
 %%{init: {'theme':'base','themeVariables':{
@@ -181,15 +184,18 @@ classDiagram
         <<enumeration>>
         CIDADAO
     }
+
     class StatusValidacao {
         <<enumeration>>
     }
+
     class StatusAnimal {
         <<enumeration>>
         DISPONIVEL
         EM_PROCESSO
         ADOTADO
     }
+
     class StatusInteresse {
         <<enumeration>>
         PENDENTE
@@ -197,17 +203,20 @@ classDiagram
         APROVADO
         RECUSADO
     }
+
     class Porte {
         <<enumeration>>
         PEQUENO
         MEDIO
         GRANDE
     }
+
     class Sexo {
         <<enumeration>>
         MACHO
         FEMEA
     }
+
     class TipoEvento {
         <<enumeration>>
     }
@@ -215,16 +224,17 @@ classDiagram
     Usuario "1" --> "0..1" Responsavel : possui perfil
     Usuario "1" --> "0..*" Animal : cadastra
     ONG "1" --> "0..*" Animal : gerencia
-    Responsavel "0..1" --> "0..*" Animal : responsável atual
+    Responsavel "0..1" --> "0..*" Animal : responsavel atual
     ONG "1" --> "0..*" Evento : organiza
 
     Usuario "1" --> "0..*" Favorito : favorita
-    Animal "1" --> "0..*" Favorito : é favoritado
+    Animal "1" --> "0..*" Favorito : recebe favoritos
+
     Usuario "1" --> "0..*" Interesse : demonstra
-    Animal "1" --> "0..*" Interesse : recebe
+    Animal "1" --> "0..*" Interesse : recebe interesses
 
     Usuario "1" --> "0..*" InscricaoEvento : se inscreve
-    Evento "1" --> "0..*" InscricaoEvento : recebe inscrições
+    Evento "1" --> "0..*" InscricaoEvento : recebe inscricoes
 
     Usuario ..> Perfil
     ONG ..> StatusValidacao
@@ -243,8 +253,27 @@ classDiagram
     class Perfil,StatusValidacao,StatusAnimal,StatusInteresse,Porte,Sexo,TipoEvento enumeracao
 ```
 
-**Legenda:** 🟫 creme = entidade principal · 🟨 amarelo = tabela intermediária (N:N) · 🟦 azul = enum
+### 🎨 Legenda
 
+| Cor | Representação |
+|---|---|
+| 🟫 Creme | Entidades principais do sistema |
+| 🟨 Amarelo | Entidades/tabelas intermediárias utilizadas nos relacionamentos |
+| 🟦 Azul | Enumerações (Enums) |
+
+### 🔗 Relacionamentos
+
+- **Usuário e Responsável:** um usuário pode possuir um perfil de responsável.
+- **Usuário e Animal:** um usuário pode cadastrar vários animais.
+- **ONG e Animal:** uma ONG pode gerenciar vários animais.
+- **Responsável e Animal:** um responsável pode estar associado aos animais sob sua responsabilidade.
+- **ONG e Evento:** uma ONG pode organizar vários eventos.
+- **Usuário e Favorito:** um usuário pode favoritar vários animais.
+- **Animal e Favorito:** um animal pode receber vários favoritos.
+- **Usuário e Interesse:** um usuário pode demonstrar interesse em vários animais.
+- **Animal e Interesse:** um animal pode receber vários registros de interesse.
+- **Usuário e Inscrição em Evento:** um usuário pode se inscrever em vários eventos.
+- **Evento e Inscrição:** um evento pode receber várias inscrições.
 
 ---
 
