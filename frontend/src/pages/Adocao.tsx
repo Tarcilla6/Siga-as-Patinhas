@@ -1,172 +1,229 @@
-import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  ArrowLeft,
-  Menu,
-  Search,
-  FilterList,
-  Heart,
-  NavArrowDown,
-} from 'iconoir-react';
-import { Sidebar } from '../components/Sidebar';
-import { BottomNav } from '../components/BottomNav';
+import { Header } from "../components/Header";
+
+import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Menu, Search, Heart } from "iconoir-react";
+import { Sidebar } from "../components/Sidebar";
+import { BottomNav } from "../components/BottomNav";
 
 interface Animal {
   id: number;
   nome: string;
   especie: string;
   idade: string;
-  porte: 'Pequeno' | 'Médio' | 'Grande';
-  caracteristica: string;
+  porte: "Pequeno" | "Médio" | "Grande";
   distancia: number;
-  status: 'DISPONÍVEL' | 'EM PROCESSO';
+  status: "DISPONÍVEL" | "EM PROCESSO";
   foto: string;
 }
 
+const getAnimalSlug = (id: number) => {
+    const map: Record<number, string> = {
+      1: "amora",
+      2: "nino",
+      3: "bento",
+      4: "mel",
+      5: "thor",
+    };
+    return map[id] || id.toString();
+  };
 const animaisMock: Animal[] = [
-  { id: 1, nome: 'Amora', especie: 'Cachorra', idade: '2 anos', porte: 'Médio', caracteristica: 'Dócil', distancia: 8, status: 'DISPONÍVEL', foto: 'https://images.unsplash.com/photo-1583511655857' },
-  { id: 2, nome: 'Nino', especie: 'Gato', idade: '10 meses', porte: 'Pequeno', caracteristica: 'Sociável', distancia: 3, status: 'DISPONÍVEL', foto: 'https://images.unsplash.com/photo-1514888286974' },
-  { id: 3, nome: 'Bento', especie: 'Cachorro', idade: '5 anos', porte: 'Médio', caracteristica: 'Tranquilo', distancia: 12, status: 'EM PROCESSO', foto: 'https://images.unsplash.com/photo-1548199973' },
-  { id: 4, nome: 'Mel', especie: 'Cachorra', idade: '1 ano', porte: 'Pequeno', caracteristica: 'Energética', distancia: 4, status: 'DISPONÍVEL', foto: 'https://images.unsplash.com/photo-1589941013453' },
-  { id: 5, nome: 'Thor', especie: 'Cachorro', idade: '3 anos', porte: 'Grande', caracteristica: 'Protetor', distancia: 10, status: 'DISPONÍVEL', foto: 'https://images.unsplash.com/photo-1537151608828' },
+  {
+    id: 1,
+    nome: "Amora",
+    especie: "Cachorra",
+    idade: "2 anos",
+    porte: "Médio",
+    distancia: 8,
+    status: "DISPONÍVEL",
+    foto: "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=300&q=80",
+  },
+  {
+    id: 2,
+    nome: "Nino",
+    especie: "Gato",
+    idade: "10 meses",
+    porte: "Pequeno",
+    distancia: 3,
+    status: "DISPONÍVEL",
+    foto: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=300&q=80",
+  },
+  {
+    id: 3,
+    nome: "Bento",
+    especie: "Cachorro",
+    idade: "5 anos",
+    porte: "Médio",
+    distancia: 12,
+    status: "EM PROCESSO",
+    foto: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=300&q=80",
+  },
+  {
+    id: 4,
+    nome: "Mel",
+    especie: "Cachorra",
+    idade: "1 ano",
+    porte: "Pequeno",
+    distancia: 4,
+    status: "DISPONÍVEL",
+    foto: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=300&q=80",
+  },
+  {
+    id: 5,
+    nome: "Thor",
+    especie: "Cachorro",
+    idade: "3 anos",
+    porte: "Grande",
+    distancia: 10,
+    status: "DISPONÍVEL",
+    foto: "https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&w=300&q=80",
+  },
 ];
 
 export const Adocao: React.FC = () => {
+  const [filtro, setFiltro] = useState("TODOS");
+  const [showFavoritos, setShowFavoritos] = useState(false);
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [favoritos, setFavoritos] = useState<number[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [especieFiltro, setEspecieFiltro] = useState<'Todos' | 'Cachorro' | 'Gato'>('Todos');
-  const [porteFiltro, setPorteFiltro] = useState<'Todos' | 'Pequeno' | 'Médio' | 'Grande'>('Todos');
-  const [statusFiltro, setStatusFiltro] = useState<'Todos' | 'DISPONÍVEL' | 'EM PROCESSO'>('Todos');
-  const [filtroFavoritos, setFiltroFavoritos] = useState(false);
-  const [ordenacao, setOrdenacao] = useState<'Recentes' | 'Próximos'>('Recentes');
-  const [showPorteFiltros, setShowPorteFiltros] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const toggleFavorito = (id: number) => {
-    setFavoritos((prev) => prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]);
-  };
-
-  const resetarFiltros = () => {
-    setEspecieFiltro('Todos');
-    setPorteFiltro('Todos');
-    setStatusFiltro('Todos');
-    setFiltroFavoritos(false);
-    setSearchTerm('');
+    setFavoritos((prev) =>
+      prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id],
+    );
   };
 
   const animaisFiltrados = useMemo(() => {
-    let filtrados = animaisMock.filter((a) => {
-      const matchSearch = (a.nome + a.especie + a.caracteristica).toLowerCase().includes(searchTerm.toLowerCase());
-      const matchEspecie = especieFiltro === 'Todos' || (especieFiltro === 'Cachorro' ? a.especie.toLowerCase().includes('cachorro') : a.especie.toLowerCase().includes('gato'));
-      const matchPorte = porteFiltro === 'Todos' || a.porte === porteFiltro;
-      const matchStatus = statusFiltro === 'Todos' || a.status === statusFiltro;
-      const matchFavoritos = !filtroFavoritos || favoritos.includes(a.id);
-      return matchSearch && matchEspecie && matchPorte && matchStatus && matchFavoritos;
-    });
+    let filtrados = animaisMock;
 
-    if (ordenacao === 'Próximos') {
-      filtrados.sort((a, b) => a.distancia - b.distancia);
-    } else {
-      filtrados.sort((a, b) => b.id - a.id);
+    if (showFavoritos) {
+      filtrados = filtrados.filter((a) => favoritos.includes(a.id));
     }
 
-    return filtrados;
-  }, [animaisMock, searchTerm, especieFiltro, porteFiltro, statusFiltro, filtroFavoritos, ordenacao, favoritos]);
+    if (filtro !== "TODOS") {
+      if (["CÃES", "GATOS"].includes(filtro)) {
+        filtrados = filtrados.filter((a) =>
+          filtro === "CÃES"
+            ? a.especie.toLowerCase().includes("cachorr")
+            : a.especie.toLowerCase().includes("gato"),
+        );
+      } else if (["PEQUENO", "MÉDIO", "GRANDE"].includes(filtro)) {
+        filtrados = filtrados.filter((a) => a.porte.toUpperCase() === filtro);
+      } else if (filtro === "DISPONÍVEIS") {
+        filtrados = filtrados.filter((a) => a.status === "DISPONÍVEL");
+      }
+    }
 
-  const pillClass = (active: boolean) => 
-    `px-4 py-2 rounded-full text-xs font-bold transition-colors ${active ? 'bg-[#571A00] text-white' : 'bg-[#AFCFFE]/20 text-[#571A00]'}`;
+    return filtrados.filter((a) =>
+      (a.nome + a.especie).toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+  }, [searchTerm, filtro, showFavoritos, favoritos]);
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] pb-20">
+    <div className="min-h-screen bg-[#FFFDF2] flex flex-col">
+      <Header onOpenSidebar={() => setIsSidebarOpen(true)} />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-
-
-      <header className="flex justify-between items-center p-4">
-        <button onClick={() => navigate(-1)}><ArrowLeft className="text-[#571A00]" /></button>
-        <button onClick={() => setIsSidebarOpen(true)}><Menu className="text-[#571A00]" /></button>
-      </header>
-
-      <main className="px-4">
-        <div className="flex justify-between items-start mb-6">
-          <div>
-            <span className="bg-[#FEE08A] text-[#571A00] text-[10px] font-bold px-3 py-1 rounded-full">ADOÇÃO RESPONSÁVEL</span>
-            <h1 className="text-2xl font-bold text-[#571A00] mt-2 font-serif">Encontre sua patinha</h1>
+      <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-6 pb-28">
+        <div className="flex justify-between items-center mb-6">
+          <div className="relative flex-1 mr-4">
+            <input
+              type="text"
+              placeholder="Buscar amigo..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-white border border-[#571A00] rounded-full py-3 px-12 outline-none text-[#571A00]"
+            />
+            <Search className="absolute left-4 top-3.5 text-[#571A00]" />
           </div>
-          <button 
-            onClick={() => setFiltroFavoritos(!filtroFavoritos)}
-            className={`${filtroFavoritos ? 'bg-[#571A00] text-white' : 'bg-[#AFCFFE] text-[#571A00]'} text-xs font-bold px-3 py-2 rounded-full`}
+          <button
+            onClick={() => setShowFavoritos(!showFavoritos)}
+            className={`px-4 py-2 rounded-full font-bold text-sm border border-[#571A00] ${showFavoritos ? "bg-[#571A00] text-[#FFFDDD]" : "bg-white text-[#571A00]"}`}
           >
-            {favoritos.length} FAVORITOS
+            FAVORITOS ({favoritos.length})
           </button>
         </div>
 
-        <div className="relative flex items-center mb-6 gap-2">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Nome, espécie ou características"
-            className="w-full pl-12 pr-4 py-3 rounded-full border border-[#571A00]/20 bg-white"
-          />
-          <Search className="absolute left-4 text-[#571A00]" />
-          <button onClick={() => setShowPorteFiltros(!showPorteFiltros)} className="p-3 bg-[#FEE08A] rounded-full text-[#571A00]">
-            <FilterList />
-          </button>
-        </div>
-
-        <div className="flex flex-wrap gap-2 mb-4">
-          {(['Todos', 'Cachorro', 'Gato'] as const).map(e => (
-            <button key={e} onClick={() => setEspecieFiltro(e)} className={pillClass(especieFiltro === e)}>{e.toUpperCase()}</button>
+        <div className="flex gap-2 overflow-x-auto pb-4 mb-4 scrollbar-hide">
+          {[
+            "TODOS",
+            "CÃES",
+            "GATOS",
+            "PEQUENO",
+            "MÉDIO",
+            "GRANDE",
+            "DISPONÍVEIS",
+          ].map((f) => (
+            <button
+              key={f}
+              onClick={() => setFiltro(f)}
+              className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border ${filtro === f ? "bg-[#571A00] text-[#FFFDDD]" : "bg-white text-[#571A00] border-[#571A00]"}`}
+            >
+              {f}
+            </button>
           ))}
-          <button onClick={() => setStatusFiltro(statusFiltro === 'DISPONÍVEL' ? 'Todos' : 'DISPONÍVEL')} className={pillClass(statusFiltro === 'DISPONÍVEL')}>DISPONÍVEIS</button>
-        </div>
-        
-        {showPorteFiltros && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {(['Todos', 'Pequeno', 'Médio', 'Grande'] as const).map(p => (
-              <button key={p} onClick={() => setPorteFiltro(p)} className={pillClass(porteFiltro === p)}>PORTE {p.toUpperCase()}</button>
-            ))}
-          </div>
-        )}
-
-        <div className="flex justify-between items-center text-xs text-[#571A00] mb-6 font-bold">
-          <span>{animaisFiltrados.length} animais encontrados</span>
-          <button onClick={() => setOrdenacao(ordenacao === 'Recentes' ? 'Próximos' : 'Recentes')} className="flex items-center gap-1">
-            Mais {ordenacao === 'Recentes' ? 'recentes' : 'próximos'} <NavArrowDown className="w-4 h-4" />
-          </button>
         </div>
 
-        <div className="space-y-4">
-          {animaisFiltrados.length > 0 ? (
-            animaisFiltrados.map((animal) => (
-              <div key={animal.id} className="bg-white p-3 rounded-3xl border border-[#571A00]/20 flex gap-4">
-                <div className="relative w-24 h-24 shrink-0">
-                  <img src={animal.foto} className="w-full h-full object-cover rounded-2xl" alt={animal.nome} />
-                  <button onClick={() => toggleFavorito(animal.id)} className={`absolute top-1 right-1 p-1 rounded-full bg-white/80 transition-transform ${favoritos.includes(animal.id) ? 'scale-110' : ''}`}>
-                    <Heart className={`w-5 h-5 ${favoritos.includes(animal.id) ? 'fill-red-500 text-red-500' : 'text-[#571A00]'}`} />
-                  </button>
-                </div>
-                <div className="flex flex-col justify-between py-1">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-[#571A00] text-lg">{animal.nome}</h3>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${animal.status === 'DISPONÍVEL' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{animal.status}</span>
-                    </div>
-                    <p className="text-xs text-[#571A00]/70">{animal.especie} • {animal.idade} • {animal.porte} • {animal.distancia} km</p>
-                  </div>
-                  <button className="px-4 py-1.5 rounded-full text-xs font-bold border border-[#571A00]/20 text-[#571A00]">
-                    {animal.status === 'DISPONÍVEL' ? 'Conhecer' : 'Acompanhar'}
-                  </button>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {animaisFiltrados.map((animal) => (
+            <div
+              key={animal.id}
+              onClick={() =>
+                navigate(`/animal/${getAnimalSlug(animal.id)}`)
+              }
+              className="bg-[#FFFDF2] border border-[#571A00] rounded-2xl p-4 flex gap-4 items-center cursor-pointer"
+            >
+              <div className="relative w-28 h-28 shrink-0">
+                <img
+                  src={animal.foto}
+                  alt={animal.nome}
+                  className="w-full h-full object-cover rounded-xl"
+                />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorito(animal.id);
+                  }}
+                  className="absolute top-1 right-1 bg-[#FFFDF2] p-1.5 rounded-full border border-[#571A00]"
+                >
+                  <Heart
+                    className={`w-4 h-4 ${favoritos.includes(animal.id) ? "fill-[#571A00]" : ""}`}
+                  />
+                </button>
               </div>
-            ))
-          ) : (
-            <div className="text-center py-10">
-              <p className="text-[#571A00] font-bold mb-4">Nenhum animal encontrado com esses filtros.</p>
-              <button onClick={resetarFiltros} className="bg-[#571A00] text-white px-6 py-2 rounded-full font-bold">Limpar todos os filtros</button>
+              <div className="flex flex-col gap-1 flex-1">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-serif font-bold text-[#571A00] text-xl">
+                    {animal.nome}
+                  </h3>
+                  <span
+                    className="text-[10px] px-2 py-0.5 rounded-full font-bold"
+                    style={{
+                      backgroundColor:
+                        animal.status === "DISPONÍVEL" ? "#FEE08A" : "#AFCFFE",
+                    }}
+                  >
+                    {animal.status}
+                  </span>
+                </div>
+                <p className="text-[#571A00] text-xs">
+                  {animal.especie} • {animal.idade} • {animal.porte} •{" "}
+                  {animal.distancia} km
+                </p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/animal/${getAnimalSlug(animal.id)}`);
+                  }}
+                  className={`mt-2 py-2 px-5 rounded-full text-xs font-bold w-fit ${animal.status === "DISPONÍVEL" ? "bg-[#571A00] text-[#FFFDDD]" : "bg-white border border-[#571A00] text-[#571A00]"}`}
+                >
+                  {animal.status === "DISPONÍVEL"
+                    ? "Conhecer >"
+                    : "Acompanhar >"}
+                </button>
+              </div>
             </div>
-          )}
+          ))}
         </div>
       </main>
       <BottomNav />
