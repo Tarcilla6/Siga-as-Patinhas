@@ -53,7 +53,8 @@ public class UsuarioRepositoryMemoria implements UsuarioRepository{
     }
 
     @Override
-    public void excluir(UUID id) {
-        usuarios.removeIf(usuario -> usuario.getId() != null && usuario.getId().equals(id));
+    public void remover(UUID id) {
+        usuarios.removeIf(usuario -> usuario.getId() != null
+                && usuario.getId().equals(id));
     }
 }

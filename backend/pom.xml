@@ -7,7 +7,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>4.1.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 
 	<groupId>br.com.sigaaspatinhas</groupId>
@@ -21,13 +21,25 @@
 	</properties>
 
 	<dependencies>
-		<!-- JPA + Hibernate + pool de conexões (já inclui o starter-jdbc) -->
+		<!-- Base do Spring Boot -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
-		<!-- Dialeto do SQLite para o Hibernate (a versão vem do Spring Boot) -->
+		<!-- API REST -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+
+		<!-- Dialeto do SQLite para o Hibernate -->
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-community-dialects</artifactId>
@@ -41,15 +53,11 @@
 			<version>3.50.3.0</version>
 		</dependency>
 
+		<!-- Testes com JUnit e Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -61,5 +69,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

@@ -34,18 +34,18 @@ public class AnimalModel{
     @Enumerated(EnumType.STRING)
     private Porte porte;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "animal_temperamentos", joinColumns = @JoinColumn(name = "animal_id"))
     @Column(name = "temperamento")
     private Set<String> temperamentos = new LinkedHashSet<>();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "animal_fotos", joinColumns = @JoinColumn(name = "animal_id"))
     @Column(name = "url")
     @OrderColumn(name = "posicao")
     private List<String> fotos = new ArrayList<>();
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "responsavel_id")
     private  ResponsavelModel responsavel;
 

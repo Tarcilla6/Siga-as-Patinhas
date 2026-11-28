@@ -15,5 +15,4 @@ public interface FavoritoRepository {
 
     void remover(UUID usuarioId);
 
-
 }
