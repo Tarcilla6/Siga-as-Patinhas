@@ -17,4 +17,6 @@ public interface EventoRepository {
     List<EventoModel> listarPorNome(String titulo);
 
     void remover(UUID id);
+
+
 }

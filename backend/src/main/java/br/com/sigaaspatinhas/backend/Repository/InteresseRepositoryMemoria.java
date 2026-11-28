@@ -65,3 +65,4 @@ public class InteresseRepositoryMemoria implements InteresseRepository {
                 .toList();
     }
 }
+

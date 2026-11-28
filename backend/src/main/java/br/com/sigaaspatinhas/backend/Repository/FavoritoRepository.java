@@ -14,4 +14,6 @@ public interface FavoritoRepository {
     boolean existe(UUID usuarioId, UUID animalId);
 
     void remover(UUID usuarioId);
+
+
 }

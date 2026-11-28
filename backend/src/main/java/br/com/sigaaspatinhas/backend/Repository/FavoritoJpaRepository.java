@@ -13,4 +13,5 @@ public interface FavoritoJpaRepository extends JpaRepository<FavoritoModel, UUID
     void deleteByUsuarioIdAnimalId(UUID usuarioId, UUID animalId);
 
     List<FavoritoModel> findByUsuarioId(UUID usuarioId);
+
 }

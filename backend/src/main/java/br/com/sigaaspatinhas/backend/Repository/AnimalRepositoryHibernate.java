@@ -37,4 +37,6 @@ public class AnimalRepositoryHibernate implements AnimalRepository {
     public void remover(UUID id) {
         jpa.deleteById(id);
     }
+
+
 }

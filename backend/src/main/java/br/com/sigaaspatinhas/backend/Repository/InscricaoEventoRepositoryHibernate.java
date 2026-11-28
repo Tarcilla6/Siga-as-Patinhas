@@ -37,4 +37,5 @@ public class InscricaoEventoRepositoryHibernate implements InscricaoEventoReposi
     public void remover(UUID id) {
         jpa.deleteById(id);
     }
+
 }

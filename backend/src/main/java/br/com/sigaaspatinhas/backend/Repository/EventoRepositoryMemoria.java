@@ -29,6 +29,8 @@ public class EventoRepositoryMemoria implements EventoRepository {
         return evento;
     }
 
+
+
     @Override
     public Optional<EventoModel> buscarPorId(UUID id) {
         return eventos.stream()

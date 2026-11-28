@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface EventoJpaRepository extends JpaRepository<EventoModel, UUID> {
 
     List<EventoModel> findByTituloContainingIgnoreCase(String titulo);
+
+
 }

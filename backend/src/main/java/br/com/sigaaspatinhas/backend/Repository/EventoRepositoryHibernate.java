@@ -42,4 +42,5 @@ public class EventoRepositoryHibernate implements EventoRepository {
     public void remover(UUID id) {
         jpa.deleteById(id);
     }
+
 }

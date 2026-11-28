@@ -12,34 +12,45 @@ import java.util.UUID;
 @Profile("memoria")
 public class FavoritoRepositoryMemoria implements FavoritoRepository {
 
-    private final List<FavoritoModel> dados = new ArrayList<>();
+    private final List<FavoritoModel> favoritos = new ArrayList<>();
 
     @Override
     public FavoritoModel salvar(FavoritoModel favorito) {
-        if (favorito.getId() == null) {
-            favorito.setId(UUID.randomUUID());
+
+        if (favorito.getId() != null) {
+            favoritos.removeIf(f -> f.getId() != null
+                    && f.getId().equals(favorito.getId()));
         }
-        dados.removeIf(f -> f.getId().equals(favorito.getId())); // remove a versão antiga, se existir
-        dados.add(favorito);
+
+        favoritos.add(favorito);
+
         return favorito;
     }
 
     @Override
     public List<FavoritoModel> listarPorUsuario(UUID usuarioId) {
-        return dados.stream()
-                .filter(f -> f.getUsuario().getId().equals(usuarioId))
+        return favoritos.stream()
+                .filter(favorito -> favorito.getUsuario() != null
+                        && favorito.getUsuario().getId() != null
+                        && favorito.getUsuario().getId().equals(usuarioId))
                 .toList();
     }
 
     @Override
     public boolean existe(UUID usuarioId, UUID animalId) {
-        return dados.stream()
-                .anyMatch(f -> f.getUsuario().getId().equals(usuarioId)
-                        && f.getAnimal().getId().equals(animalId));
+        return favoritos.stream()
+                .anyMatch(favorito -> favorito.getUsuario() != null
+                        && favorito.getAnimal() != null
+                        && favorito.getUsuario().getId() != null
+                        && favorito.getAnimal().getId() != null
+                        && favorito.getUsuario().getId().equals(usuarioId)
+                        && favorito.getAnimal().getId().equals(animalId));
     }
 
     @Override
     public void remover(UUID usuarioId) {
-        dados.removeIf(f -> f.getUsuario().getId().equals(usuarioId));
+        favoritos.removeIf(favorito -> favorito.getUsuario() != null
+                && favorito.getUsuario().getId() != null
+                && favorito.getUsuario().getId().equals(usuarioId));
     }
 }

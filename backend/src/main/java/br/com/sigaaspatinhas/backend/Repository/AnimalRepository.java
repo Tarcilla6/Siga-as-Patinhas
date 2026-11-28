@@ -14,4 +14,6 @@ public interface AnimalRepository {
     List<AnimalModel> listarTodos();
 
     void remover(UUID id);
+
+
 }

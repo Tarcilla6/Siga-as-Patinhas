@@ -37,3 +37,5 @@ public class FavoritoRepositoryHibernate implements FavoritoRepository{
         jpa.deleteById(usuarioId);
     }
 }
+
+
