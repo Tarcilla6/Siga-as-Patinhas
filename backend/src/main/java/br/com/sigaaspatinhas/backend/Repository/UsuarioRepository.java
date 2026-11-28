@@ -19,5 +19,5 @@ public interface UsuarioRepository {
 
     boolean existePorEmail(String email);
 
-    void excluir(UUID id);
+    void remover(UUID id);
 }

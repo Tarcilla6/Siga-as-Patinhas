@@ -1,6 +1,9 @@
 package br.com.sigaaspatinhas.backend.Repository;
 
 import br.com.sigaaspatinhas.backend.Model.EventoModel;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -12,35 +15,72 @@ import java.util.UUID;
 @Profile("!memoria")
 public class EventoRepositoryHibernate implements EventoRepository {
 
-    private final EventoJpaRepository jpa;
+    private final SessionFactory sessionFactory;
 
-    public EventoRepositoryHibernate(EventoJpaRepository jpa) {
-        this.jpa = jpa;
+    public EventoRepositoryHibernate(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public EventoModel salvar(EventoModel evento) {
-        return jpa.save(evento);
+        try (Session sessao = sessionFactory.openSession()) {
+            Transaction transacao = sessao.beginTransaction();
+            try {
+                EventoModel salvo = evento;
+                if (evento.getId() == null) {
+                    sessao.persist(evento);
+                } else {
+                    salvo = sessao.merge(evento);
+                }
+                transacao.commit();
+                return salvo;
+            } catch (RuntimeException erro) {
+                transacao.rollback();
+                throw erro;
+            }
+        }
     }
 
     @Override
     public Optional<EventoModel> buscarPorId(UUID id) {
-        return jpa.findById(id);
+        try (Session sessao = sessionFactory.openSession()) {
+            return Optional.ofNullable(sessao.find(EventoModel.class, id));
+        }
     }
 
     @Override
     public List<EventoModel> listarTodos() {
-        return jpa.findAll();
+        try (Session sessao = sessionFactory.openSession()) {
+            return sessao.createQuery("from EventoModel", EventoModel.class).list();
+        }
     }
 
     @Override
-    public List<EventoModel> listarPorNome(String titulo) {
-        return jpa.findByTituloContainingIgnoreCase(titulo);
+    public List<EventoModel> listarPorNome(String nome) {
+        try (Session sessao = sessionFactory.openSession()) {
+            return sessao.createQuery(
+                            "from EventoModel e "
+                                    + "where lower(e.titulo) like lower(:nome)",
+                            EventoModel.class)
+                    .setParameter("nome", "%" + nome + "%")
+                    .list();
+        }
     }
 
     @Override
     public void remover(UUID id) {
-        jpa.deleteById(id);
+        try (Session sessao = sessionFactory.openSession()) {
+            Transaction transacao = sessao.beginTransaction();
+            try {
+                EventoModel evento = sessao.find(EventoModel.class, id);
+                if (evento != null) {
+                    sessao.remove(evento);
+                }
+                transacao.commit();
+            } catch (RuntimeException erro) {
+                transacao.rollback();
+                throw erro;
+            }
+        }
     }
-
 }

@@ -11,3 +11,6 @@ Thumbs.db
 node_modules
 dist
 .DS_Store
+
+### banco de dados
+*.db

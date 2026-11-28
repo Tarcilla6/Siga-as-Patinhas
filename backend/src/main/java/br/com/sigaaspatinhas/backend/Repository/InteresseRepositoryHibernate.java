@@ -1,6 +1,9 @@
 package br.com.sigaaspatinhas.backend.Repository;
 
 import br.com.sigaaspatinhas.backend.Model.InteresseModel;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -9,37 +12,76 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-@Profile("!memeoria")
-public class InteresseRepositoryHibernate implements InteresseRepository{
+@Profile("!memoria")
+public class InteresseRepositoryHibernate implements InteresseRepository {
 
-    private final InteresseJpaRepository jpa;
+    private final SessionFactory sessionFactory;
 
-    public InteresseRepositoryHibernate(InteresseJpaRepository jpa){
-        this.jpa = jpa;
+    public InteresseRepositoryHibernate(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public InteresseModel salvar(InteresseModel interesse) {
-        return jpa.save(interesse);
+        try (Session sessao = sessionFactory.openSession()) {
+            Transaction transacao = sessao.beginTransaction();
+            try {
+                InteresseModel salvo = interesse;
+                if (interesse.getId() == null) {
+                    sessao.persist(interesse);           // INSERT
+                } else {
+                    salvo = sessao.merge(interesse);     // UPDATE
+                }
+                transacao.commit();
+                return salvo;
+            } catch (RuntimeException erro) {
+                transacao.rollback();
+                throw erro;
+            }
+        }
     }
 
     @Override
     public Optional<InteresseModel> buscarPorId(UUID id) {
-        return jpa.findById(id);
+        try (Session sessao = sessionFactory.openSession()) {
+            return Optional.ofNullable(sessao.find(InteresseModel.class, id));
+        }
     }
 
     @Override
     public boolean existe(UUID usuarioId, UUID animalId) {
-        return jpa.existsByUsuarioIdAnimalId(usuarioId, animalId);
+        try (Session sessao = sessionFactory.openSession()) {
+            Long total = sessao.createQuery(
+                            "select count(i) from InteresseModel i "
+                                    + "where i.usuario.id = :usuarioId "
+                                    + "and i.animal.id = :animalId",
+                            Long.class)
+                    .setParameter("usuarioId", usuarioId)
+                    .setParameter("animalId", animalId)
+                    .uniqueResult();
+            return total != null && total > 0;
+        }
     }
 
     @Override
     public List<InteresseModel> listarPorUsuario(UUID usuarioId) {
-        return jpa.findByUsuarioId(usuarioId);
+        try (Session sessao = sessionFactory.openSession()) {
+            return sessao.createQuery(
+                            "from InteresseModel i where i.usuario.id = :usuarioId",
+                            InteresseModel.class)
+                    .setParameter("usuarioId", usuarioId)
+                    .list();
+        }
     }
 
     @Override
     public List<InteresseModel> listarPorAnimal(UUID animalId) {
-        return jpa.findByAnimalId(animalId);
+        try (Session sessao = sessionFactory.openSession()) {
+            return sessao.createQuery(
+                            "from InteresseModel i where i.animal.id = :animalId",
+                            InteresseModel.class)
+                    .setParameter("animalId", animalId)
+                    .list();
+        }
     }
 }
