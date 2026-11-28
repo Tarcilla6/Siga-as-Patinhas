@@ -19,11 +19,11 @@ public class FavoritoModel {
     @JdbcTypeCode(SqlTypes.CHAR)
     private UUID id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
     private UsuarioModel usuario;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "animal_id")
     private AnimalModel animal;
 
